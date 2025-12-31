@@ -350,11 +350,12 @@ document.getElementById("img").addEventListener("change", async function(e) {
   
   try {
     // Upload to your API
-    const response = await fetch('http://localhost:3000/api/upload', {
+    const response = await fetch('https://photo-upload-api-xxxx.onrender.com/api/upload', {
       method: 'POST',
       body: formData
     });
-    
+
+
     const data = await response.json();
     
     if (data.success) {
@@ -421,22 +422,6 @@ if(!uploadedPhotoURL) {
   const locationName = selectedAddress.value;
   const locationLink = selectedAddress.getAttribute("data-link");
   const addressVal = locationName;
-
-  // Email-safe HTML
-  // const signatureHTML = `
-  //   <table style="font-family: Arial, sans-serif;">
-  //     <tr>
-  //       <td>
-  //         <strong>Address:</strong>
-  //         <a href="${locationLink}" 
-  //            target="_blank" 
-  //            style="color:#000000; text-decoration:none;">
-  //           ${locationName}
-  //         </a>
-  //       </td>
-  //     </tr>
-  //   </table>
-  // `;
 
 
   const vCardData = generateVCard(nameVal, emailVal, phoneVal, addressVal, titleVal, companyVal);

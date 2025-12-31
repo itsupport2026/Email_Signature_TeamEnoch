@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Email Signature Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+crossorigin="anonymous"/>
+
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  body{
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f8f9fa;
+  padding: 10px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #2c3e50;
+}
+
+.container{
+  max-width: 1000px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+h2{
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 30px;
+  letter-spacing: -0.5px;
+}
+
+label{
+  font-weight: 500;
+  font-size: 14px;
+  color: #000;
+  display: block;
+  margin-bottom: 8px;
+  letter-spacing: 0.2px;
+}
+
+input, textarea{
+  width: 100%;
+  padding: 12px 16px;
+  margin: 0 0 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  border: 1.5px solid #d0d5dd;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+input:focus, textarea:focus{
+  outline: none;
+  border-color: #00AE99;
+  box-shadow: 0 0 0 3px rgba(0, 174, 153, 0.1);
+}
+
+input::placeholder, textarea::placeholder{
+  color: #98a2b3;
+  font-size: 14px;
+}
+
+button{
+  background: #00AE99;
+  color: #fff;
+  border: none;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.3px;
+}
+
+button:hover{
+  background: #009182;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 174, 153, 0.3);
+}
+
+button:active{
+  transform: translateY(0);
+}
+
+#signatureWrapper{
+  display: none;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid #f0f0f0;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h2>Email Signature Generator</h2>
+
+<label>Profile Image <span style = "color:red">*</span></label>
+<input type="file" id="img" accept="image/*" required>
+<div id="uploadStatus" style="margin-top: 2px; margin-bottom: 15px; font-size: 13px;"></div>
+
+<label>Full Name <span style = "color:red">*</span></label>
+<input type = "text" id="name" required>
+
+<label>Job Title <span style = "color:red">*</span></label>
+<input type = "text" id="title" required>
+
+<input type="hidden" id="company" value="Team Enoch">
+
+<label>Personal Phone <span style = "color:red">*</span></label>
+<input type = "tel" id="phone" placeholder="e.g: (123) 456-7890" required>
+
+<label>Email <span style = "color:red">*</span></label>
+<input type = "email" id="email" placeholder="e.g., user@example.com" required>
+
+
+<label>
+  Address <span style="color:red">*</span>
+</label>
+
+<select id="address" style = "width: 100%; padding: 12px; font-size: 16px; font-family: inherit; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px; box-sizing: border-box;"required>
+  <option value="">-- Select Address --</option>
+
+  <option value="8940 Creek Run Rd Fort Worth, Texas 76120" data-link="https://www.google.com/maps/place/Team+Enoch:+Electric,+Plumbing,+Air,+Roofing/@32.763454,-97.1586546,17z/data=!4m6!3m5!1s0x864c2164667bb363:0xf04f27f04807c51!8m2!3d32.7634525!4d-97.1553565!16s%2Fg%2F11fmjry22_?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D">
+    Team Enoch Texas
+  </option>
+
+  <option value="3950 Anchuca Dr Bay 4 Lakeland, Florida 33811" data-link="https://www.google.com/maps/place/Team+Enoch:+AC+Repair/@27.9939422,-82.0474393,19z/data=!3m1!4b1!4m6!3m5!1s0x88dd37e24ea81f3f:0xcb756f5cc093cb08!8m2!3d27.993941!4d-82.0467956!16s%2Fg%2F11yp7tcwvy?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D">
+    Team Enoch Florida
+  </option>
+
+</select>
+<br>
+<button onclick="generate()">Generate Signature</button>
+
+<div id="signatureWrapper">
+
+<br>
+
+<!-- ================= EXACT SIGNATURE ================= -->
+<table style="max-width: 450px; margin: 0; border-collapse: collapse; font-family: Arial, sans-serif;">
+    <tr>
+        <!-- <td style="background-image:url('https://lh3.googleusercontent.com/d/12PtYcQCcT3dDVahn3HFoI5LrB-j0x6jF');  border-radius: 12px; padding: 5px;background-size:cover; background-repeat: no-repeat;background-attachment: fixed;background-position: center;"> -->
+        <td style="background-color: #737578 ;border-radius: 12px; padding: 5px;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="vertical-align: middle; padding-right: 12px; width:280px; height:100% ">
+                        <table style="background:rgba(1,1,1, 0.2); border-radius: 10px; border: 3px solid #111;padding: 15px; text-align: center; height: 100%;">
+                            <tr>
+                                <td>
+                                    <img id="s_img" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 3px 10px rgba(0,0,0,0.55); display: block; margin: 0 auto 12px;">
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                      <tr> <td id="s_name" nowrap style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px; padding: 0;"></td> </tr>
+                                  </table>
+                                    <div style="font-size: 12px; color: #666; line-height: 1.4;"></div>
+                                    <div id = "s_title" style="font-size: 12px; font-weight: bold; color: #000; margin-top: 10px; padding-top: 8px; border-top: 2px solid #000;"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="vertical-align: top; padding-right: 15px; width: 260px; text-align: center; ">
+                        <img src="https://lh3.googleusercontent.com/d/1XQSCCts09YLonl2Qb9WZjInQoP_z84M1" style="max-width: 240px; max-height: 180px; display: block;margin: 0 auto; padding: 3px; border-radius: 8px; ">
+                        <!-- Social Media Icons - Horizontal Layout -->
+                        <div style="text-align: center; margin-top: 5px; margin-bottom: 10px;">
+                            <a href="https://www.facebook.com/share/1B35sgfU69/" target="_blank" style="display: inline-block; margin: 0 6px;">
+                                  <img src="https://img.icons8.com/ios-filled/20/000000/facebook-new.png
+                                    " width="18" height="18" alt="Facebook" style="vertical-align:middle; margin-right:4px; border:0; display:inline-block; filter: brightness(0) invert(1);">
+                            </a>
+                            <a href="https://www.instagram.com/team.enoch.dfw/?hl=en" target="_blank" style="display: inline-block; margin: 0 6px;">
+                                  <img src="https://img.icons8.com/ios-filled/20/000000/instagram-new.png
+                                    " width="18" height="18" alt="Facebook" style="vertical-align:middle; margin-right:4px; border:0; display:inline-block;color: white; filter: brightness(0) invert(1);">
+                            </a>
+                            <a href="https://www.linkedin.com/company/enochelectric/posts/?feedView=all" target="_blank" style="display: inline-block; margin: 0 6px;">
+                                  <img src="https://img.icons8.com/ios-filled/20/000000/linkedin.png
+                                    " width="18" height="18" alt="Facebook" style="vertical-align:middle; margin-right:4px; border:0; display:inline-block; filter: brightness(0) invert(1);">
+                            </a>
+                            <a href="https://www.youtube.com/@TeamEnoch" target="_blank" style="display: inline-block; margin: 0 6px;">
+                                  <img src="https://img.icons8.com/ios-filled/20/000000/youtube-play.png
+                                    " width="18" height="18" alt="Facebook" style="vertical-align:middle; margin-right:4px; border:0; display:inline-block; filter: brightness(0) invert(1);">
+                            </a>
+                            <a href="https://www.tiktok.com/@teamenochhvac?_r=1&_t=ZS-92TQ8y9Zgxe" target="_blank" style="display: inline-block; margin: 0 6px;">
+                                  <img src="https://img.icons8.com/ios-filled/20/000000/tiktok.png
+                                    " width="18" height="18" alt="Facebook" style="vertical-align:middle; margin-right:4px; border:0; display:inline-block; filter: brightness(0) invert(1);">
+                            </a>
+                        </div>
+                       <div >
+                          <table style="width:100%; border-collapse: collapse;text-align:left;">
+                            <tr>
+                              <!-- TEXAS COLUMN -->
+                              <td style="vertical-align: top; padding-right: 12px;">
+                                <div style="color:#000; font-weight:bold; font-size:18px; margin-bottom:6px;">
+                                  Texas
+                                </div>
+
+                                <div style="margin-top:4px; white-space:nowrap;">
+                                  <!-- <i class="fa-solid fa-phone" style="font-size:12px; color:white; margin-right:6px;"></i> -->
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                  <a href="tel:+18178888880" style="color:white; font-size:12px; text-decoration:none;">
+                                    DFW: (817) 888-8880
+                                  </a>
+                                </div>
+
+                                <div style="margin-top:4px; white-space:nowrap;">
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                  <a href="tel:+15128828880" style="color:white; font-size:12px; text-decoration:none;">
+                                    Austin: (512) 882-8880
+                                  </a>
+                                </div>
+
+                                <div style="margin-top:4px; white-space:nowrap;">
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                  <a href="tel:+17135001000" style="color:white; font-size:12px; text-decoration:none;">
+                                    Houston: (713) 500-1000
+                                  </a>
+                                </div>
+
+                                <div style="margin-top:4px; white-space:nowrap;">
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                  <a href="tel:+12109048000" style="color:white; font-size:12px; text-decoration:none;">
+                                    San Antonio: (210) 904-8000
+                                  </a>
+                                </div>
+                              </td>
+
+                              <!-- FLORIDA COLUMN -->
+                              <td style="vertical-align: top; padding-left: 12px;">
+                                <div style="color:#000; font-weight:bold; font-size:18px; margin-bottom:6px;">
+                                  Florida
+                                </div>
+
+                                <div style="margin-top:4px; white-space:nowrap;">
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                  <a href="tel:+14073368000" style="color:white; font-size:12px; text-decoration:none;">
+                                    Orlando: (407) 336-8000
+                                  </a>
+                                </div>
+
+                                <div style="margin-top:4px; white-space:nowrap;">
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                  <a href="tel:+18134368000" style="color:white; font-size:12px; text-decoration:none;">
+                                    Tampa: (813) 436-8000
+                                  </a>
+                                </div>
+                              </td>
+                            </tr>
+                          </table>
+
+                       </div>
+                    </td>
+                    <td style="vertical-align: middle;  width:280px;">
+                        <table style="border-collapse: collapse; width: 100%;">
+                            <!-- QR Code Section -->
+                            <tr>
+                                <td style="text-align: center; padding-bottom: 5px;">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://teamenoch.com" style="width: 100px; height: 100px; background: white; padding: 2px; border-radius: 8px; display: block; margin: 0 auto;">
+                                    <div style="color: white; font-size: 11px; margin-top: 5px; font-weight: bold;">Scan for Contact</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-bottom: 3px;">
+                                    <table style="border-collapse: collapse;">
+                                        <tr>
+                                            <td style="width:24px; min-width:24px; text-align:center; vertical-align:top; color:white; font-size:12px; padding-right:10px;">
+                              <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;"></td>
+                                            <td><a href="tel:+14699603171" style="color: white; font-size: 12px; white-space: nowrap; text-decoration: none;" id = "s_phone"></a></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-bottom: 3px;">
+                                    <table style="border-collapse: collapse;">
+                                        <tr>
+                                            <td style="width:24px; min-width:24px; text-align:center; vertical-align:top; color:white; font-size:12px; padding-right:10px;">
+                                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/new-post.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;"></td>
+                                            <td> <a href="mailto:bhuwan@teamenoch.com" style="color: white; font-size: 12px; text-decoration: none;" id = "s_email"></a></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-bottom: 3px;">
+                                    <table style="border-collapse: collapse;">
+                                        <tr>
+                                            <td style="width:24px; min-width:24px; text-align:center; vertical-align:top; color:white; font-size:12px; padding-right:10px;">
+                                            <img src="https://img.icons8.com/ios-filled/20/ffffff/marker.png" width="14" height="14" alt="Location logo" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;"></td>
+                                            <td><a href="https://www.google.com/maps/search/?api=1&query=4310+Wiley+Post+Rd+Suite+210+Addison+Texas+75001" target="_blank" style="color: white; font-size: 12px; text-decoration: none;" id = "s_address"></a></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+</div>
+</div>
+
+<script>
+let uploadedPhotoURL = null;
+
+function generateVCard(name, email, phone, address, title, company) {
+  // Remove any extra digits from phone for proper formatting
+  const cleanPhone = phone.replace(/\D/g, '');
+  
+  const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:${name}
+N:${name.split(' ').reverse().join(';')};;;
+ORG:${company}
+TITLE:${title}
+TEL;TYPE=CELL:${cleanPhone}
+EMAIL:${email}
+ADR;TYPE=WORK:;;${address};;;;
+URL:https://teamenoch.com
+END:VCARD`;
+  
+  return encodeURIComponent(vCard);
+}
+
+// Listen for when user selects a photo
+document.getElementById("img").addEventListener("change", async function(e) {
+  const file = e.target.files[0];
+  
+  if (!file) return;
+  
+  const statusDiv = document.getElementById("uploadStatus");
+  statusDiv.innerHTML = '<span style="color: #ff9800;">⏳ Uploading photo...</span>';
+  
+  // Create FormData
+  const formData = new FormData();
+  formData.append('photo', file);
+  
+  try {
+    // Upload to your API
+    const response = await fetch('http://localhost:3000/api/upload', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      uploadedPhotoURL = data.url; // Store the URL
+      statusDiv.innerHTML = '<span style="color: #4CAF50;">✓ Photo uploaded successfully!</span>';
+    } else {
+      statusDiv.innerHTML = '<span style="color: #f44336;">✗ Upload failed: ' + data.message + '</span>';
+      uploadedPhotoURL = null;
+    }
+  } catch (error) {
+    statusDiv.innerHTML = '<span style="color: #f44336;">✗ Upload failed: ' + error.message + '</span>';
+    uploadedPhotoURL = null;
+  }
+});
+
+function generate(){
+  // Get values
+  const imgFile = document.getElementById("img").files[0];
+  const nameVal = document.getElementById("name").value.trim();
+  const titleVal = document.getElementById("title").value.trim();
+  const companyVal = document.getElementById("company").value.trim();
+  const phoneVal = document.getElementById("phone").value.trim();
+  const emailVal = document.getElementById("email").value.trim();
+  const select = document.getElementById("address");
+  const selectedAddress = select.options[select.selectedIndex];
+
+  if(!selectedAddress.value) {
+    alert("please select an address");
+    return;
+  }
+  // Check if photo was uploaded
+if(!uploadedPhotoURL) {
+  alert("Please wait for the photo to upload or select a photo.");
+  return;
+}
+
+  // Check if all fields are filled
+  if(!nameVal || !companyVal || !titleVal || !phoneVal || !emailVal ){
+    alert("All fields are required to generate the email signature.");
+    return;
+  }
+
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!emailRegex.test(emailVal)){
+    alert("Please enter a valid email address (e.g., user@example.com)");
+    return;
+  }
+
+  // Phone validation - only numbers, spaces, hyphens, parentheses, and plus sign allowed
+  const phoneRegex = /^[\d\s\-\(\)\+]+$/;
+  if(!phoneRegex.test(phoneVal)){
+    alert("Phone number should contain only numbers and these characters: + - ( ) and spaces");
+    return;
+  }
+
+  // Check if phone has at least 10 digits
+  const digitsOnly = phoneVal.replace(/\D/g, '');
+  if(digitsOnly.length < 10){
+    alert("Phone number should contain at least 10 digits");
+    return;
+  }
+
+  const locationName = selectedAddress.value;
+  const locationLink = selectedAddress.getAttribute("data-link");
+  const addressVal = locationName;
+
+  // Email-safe HTML
+  // const signatureHTML = `
+  //   <table style="font-family: Arial, sans-serif;">
+  //     <tr>
+  //       <td>
+  //         <strong>Address:</strong>
+  //         <a href="${locationLink}" 
+  //            target="_blank" 
+  //            style="color:#000000; text-decoration:none;">
+  //           ${locationName}
+  //         </a>
+  //       </td>
+  //     </tr>
+  //   </table>
+  // `;
+
+
+  const vCardData = generateVCard(nameVal, emailVal, phoneVal, addressVal, titleVal, companyVal);
+  
+  // Update QR code image with vCard data
+  const qrImg = document.querySelector('img[src*="qrserver"]');
+  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${vCardData}`;
+
+
+  // Set values in signature
+  s_img.src = uploadedPhotoURL;
+  s_name.textContent = nameVal;
+  s_title.textContent = titleVal;
+  s_phone.textContent = phoneVal;
+  s_email.textContent = emailVal;
+  s_address.textContent = addressVal;
+  s_address.href = locationLink;
+
+  // Update email and phone href attributes
+  s_phone.href = "tel:" + phoneVal.replace(/\D/g, '');
+  s_email.href = "mailto:" + emailVal;
+
+  document.getElementById("signatureWrapper").style.display="block";
+}
+</script>
+
+</body>
+</html>

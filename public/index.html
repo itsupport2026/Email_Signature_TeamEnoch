@@ -350,11 +350,12 @@ document.getElementById("img").addEventListener("change", async function(e) {
   
   try {
     // Upload to your API
-    const response = await fetch('https://photo-upload-api-xxxx.onrender.com/api/upload', {
+    const response = await fetch('https://email-signature-teamenoch.onrender.com//api/upload', {
       method: 'POST',
       body: formData
     });
 
+    
 
     const data = await response.json();
     

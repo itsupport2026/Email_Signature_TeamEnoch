@@ -25,9 +25,11 @@ app.get('/', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
 // ```
 
 // **What this does:** Sets up Express server, connects your routes, and starts listening on port 3000.

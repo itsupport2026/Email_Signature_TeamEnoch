@@ -210,33 +210,55 @@ button:active{
 
 <h3 style="margin-bottom:10px;">Signature Customization</h3>
 
-<div style ="display:flex;"> 
-<!-- Font Size -->
-<div> 
-<label>Font Size (px)</label>
-<input 
-  type="number" 
-  id="fontSize" 
-  value="14" 
-  min="8" 
-  max="32" 
-  placeholder="14"
-  style="width:200px; padding:10px; margin-bottom:10px;"
->
+<div style="display:flex;"> 
+  <!-- Font Size for Name -->
+  <div> 
+    <label>Font Size - Name (px)</label>
+    <input 
+      type="number" 
+      id="fontSizeName" 
+      value="14" 
+      min="8" 
+      max="32" 
+      placeholder="14"
+      style="width:200px; padding:10px; margin-bottom:10px;"
+    >
+  </div>
+
+  <!-- Font Size for Phone/Contact -->
+  <div style="margin-left: 40px;"> 
+    <label>Font Size - Phone/Contact (px)</label>
+    <input 
+      type="number" 
+      id="fontSizeContact" 
+      value="12" 
+      min="8" 
+      max="24" 
+      placeholder="12"
+      style="width:200px; padding:10px; margin-bottom:10px;"
+    >
+  </div>
 </div>
 
-<!-- Font Color -->
- <div style = "margin-left: 40px;"> 
-<label>Font Color</label>
-<div style="display:flex; gap:10px; margin-bottom:10px; align-items:center;">
-  <input type="color" id="fontColorPicker" value="#ffffff" style="width:50px; height:35px; cursor:pointer;">
-  <input type="text" id="fontColorText" value="#ffffff" placeholder="#000000" style="width:100px; font-family:monospace;">
-  <!-- <span id="fontColorDisplay" style="padding:4px 12px; background-color:#ffffff; border:1px solid #ccc; border-radius:4px; font-family:monospace; font-size:12px;">#ffffff</span> -->
-</div>
- </div>
+<div style="display:flex;"> 
+  <!-- Font Color for Profile (Name & Title) -->
+  <div> 
+    <label>Font Color - Profile</label>
+    <div style="display:flex; gap:10px; margin-bottom:10px; align-items:center;">
+      <input type="color" id="fontColorProfilePicker" value="#ffffff" style="width:50px; height:35px; cursor:pointer;">
+      <input type="text" id="fontColorProfileText" value="#ffffff" placeholder="#ffffff" style="width:100px; font-family:monospace;">
+    </div>
+  </div>
 
+  <!-- Font Color for Phone/Contact -->
+  <div style="margin-left: 40px;"> 
+    <label>Font Color - Phone/Contact</label>
+    <div style="display:flex; gap:10px; margin-bottom:10px; align-items:center;">
+      <input type="color" id="fontColorContactPicker" value="#ffffff" style="width:50px; height:35px; cursor:pointer;">
+      <input type="text" id="fontColorContactText" value="#ffffff" placeholder="#ffffff" style="width:100px; font-family:monospace;">
+    </div>
+  </div>
 </div>
-
 
 <div style = "display: flex;"> 
   <!-- Card Background Color -->
@@ -693,23 +715,42 @@ function liveUpdateSignature() {
 function updateSignatureColorsAndFont() {
   if (!signatureGenerated) return;
 
-  const fontSize = document.getElementById("fontSize").value + "px";
-  const fontColor = document.getElementById("fontColorText").value;
+  const fontSizeName = document.getElementById("fontSizeName").value + "px";
+  const fontSizeContact = document.getElementById("fontSizeContact").value + "px";
+  const fontColorProfile = document.getElementById("fontColorProfileText").value;
+  const fontColorContact = document.getElementById("fontColorContactText").value;
   const cardColor = document.getElementById("cardColorText").value;
   const cardBorder = document.getElementById("cardBorderText").value;
 
-  // Text
-  s_name.style.fontSize = fontSize;
-  s_name.style.color = fontColor;
-  s_title.style.color = fontColor;
-  s_phone.style.color = fontColor;
-  s_email.style.color = fontColor;
-  s_address.style.color = fontColor;
+  // Profile section (Name & Title)
+  s_name.style.fontSize = fontSizeName;
+  s_name.style.color = fontColorProfile;
+  s_title.style.fontSize = fontSizeName;
+  s_title.style.color = fontColorProfile;
+
+  // Last column - Contact details
+  s_phone.style.fontSize = fontSizeContact;
+  s_phone.style.color = fontColorContact;
+  s_email.style.fontSize = fontSizeContact;
+  s_email.style.color = fontColorContact;
+  s_address.style.fontSize = fontSizeContact;
+  s_address.style.color = fontColorContact;
+
+  // Middle column - Texas/Florida phone numbers
+  const middlePhoneLinks = document.querySelectorAll('td[style*="vertical-align: top"] a[href^="tel:"]');
+  middlePhoneLinks.forEach(link => {
+    // Skip the personal phone in the last column
+    if (link.id !== 's_phone') {
+      link.style.fontSize = fontSizeContact;
+      link.style.color = fontColorContact;
+    }
+  });
 
   // Card
   sigCard.style.backgroundColor = cardColor;
   sigCard.style.borderColor = cardBorder;
 }
+
 function applyBackgroundColor(color) {
   if (!signatureGenerated) return;
 
@@ -760,11 +801,14 @@ function syncColor(pickerId, textId) {
   });
 }
 
-syncColor("fontColorPicker", "fontColorText");
+syncColor("fontColorProfilePicker", "fontColorProfileText");
+syncColor("fontColorContactPicker", "fontColorContactText");
 syncColor("cardColorPicker", "cardColorText");
 syncColor("cardBorderPicker", "cardBorderText");
 
-document.getElementById("fontSize").addEventListener("input", updateSignatureColorsAndFont);
+// Font size controls
+document.getElementById("fontSizeName").addEventListener("input", updateSignatureColorsAndFont);
+document.getElementById("fontSizeContact").addEventListener("input", updateSignatureColorsAndFont);
 
 
 const bgTypeRadios = document.querySelectorAll('input[name="bgType"]');

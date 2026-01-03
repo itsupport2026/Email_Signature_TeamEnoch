@@ -194,6 +194,38 @@ button:active{
 </select>
 <br>
 <button onclick="generate()">Generate Signature</button>
+<hr style="margin:25px 0">
+
+<h3 style="margin-bottom:10px;">Signature Customization</h3>
+
+<!-- Font Size -->
+<label>Font Size</label>
+<select id="fontSize" style="width:100%; padding:10px; margin-bottom:10px;">
+  <option value="12px">Small</option>
+  <option value="14px" selected>Medium</option>
+  <option value="16px">Large</option>
+</select>
+
+<!-- Font Color -->
+<label>Font Color</label>
+<div style="display:flex; gap:10px; margin-bottom:10px;">
+  <input type="color" id="fontColorPicker" value="#ffffff">
+  <input type="text" id="fontColorText" value="#ffffff" style="flex:1;">
+</div>
+
+<!-- Card Background Color -->
+<label>Card Color</label>
+<div style="display:flex; gap:10px; margin-bottom:10px;">
+  <input type="color" id="cardColorPicker" value="#1a1a1a">
+  <input type="text" id="cardColorText" value="#1a1a1a" style="flex:1;">
+</div>
+
+<!-- Card Border Color -->
+<label>Card Border Color</label>
+<div style="display:flex; gap:10px; margin-bottom:10px;">
+  <input type="color" id="cardBorderPicker" value="#111111">
+  <input type="text" id="cardBorderText" value="#111111" style="flex:1;">
+</div>
 
 </div>
 <div class="preview-column">
@@ -209,7 +241,7 @@ button:active{
             <table style="width: 100%; border-collapse: collapse;">
                 <tr>
                     <td style="vertical-align: middle; padding-right: 12px; width:280px; height:100% ">
-                        <table style="background:rgba(1,1,1, 0.2); border-radius: 10px; border: 3px solid #111;padding: 15px; text-align: center; height: 100%;">
+                        <table id = "sigCard" style="background:rgba(1,1,1, 0.2); border-radius: 10px; border: 3px solid #111;padding: 15px; text-align: center; height: 100%;">
                             <tr>
                                 <td>
                                     <img id="s_img" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 3px 10px rgba(0,0,0,0.55); display: block; margin: 0 auto 12px;">
@@ -545,6 +577,49 @@ function liveUpdateSignature() {
   document.getElementById(id).addEventListener("input", liveUpdateSignature);
   document.getElementById(id).addEventListener("change", liveUpdateSignature);
 });
+
+function updateSignatureColorsAndFont() {
+  if (!signatureGenerated) return;
+
+  const fontSize = document.getElementById("fontSize").value;
+  const fontColor = document.getElementById("fontColorText").value;
+  const cardColor = document.getElementById("cardColorText").value;
+  const cardBorder = document.getElementById("cardBorderText").value;
+
+  // Text
+  s_name.style.fontSize = fontSize;
+  s_name.style.color = fontColor;
+  s_title.style.color = fontColor;
+  s_phone.style.color = fontColor;
+  s_email.style.color = fontColor;
+  s_address.style.color = fontColor;
+
+  // Card
+  sigCard.style.backgroundColor = cardColor;
+  sigCard.style.borderColor = cardBorder;
+}
+function syncColor(pickerId, textId) {
+  const picker = document.getElementById(pickerId);
+  const text = document.getElementById(textId);
+
+  picker.addEventListener("input", () => {
+    text.value = picker.value;
+    updateSignatureColorsAndFont();
+  });
+
+  text.addEventListener("input", () => {
+    if (/^#[0-9A-Fa-f]{6}$/.test(text.value)) {
+      picker.value = text.value;
+      updateSignatureColorsAndFont();
+    }
+  });
+}
+
+syncColor("fontColorPicker", "fontColorText");
+syncColor("cardColorPicker", "cardColorText");
+syncColor("cardBorderPicker", "cardBorderText");
+
+document.getElementById("fontSize").addEventListener("change", updateSignatureColorsAndFont);
 
 
 </script>

@@ -205,7 +205,7 @@ button:active{
 
 </select>
 <br>
-<button onclick="generate()">Generate Signature</button>
+<button onclick="copySignatureHTML()">Copy HTML Code</button>
 <hr style="margin:25px 0">
 
 <h3 style="margin-bottom:10px;">Signature Customization</h3>
@@ -278,7 +278,7 @@ button:active{
 <div style="display:flex; gap:10px; margin-bottom:10px; align-items:center;">
   <input type="color" id="cardBorderPicker" value="#111111" style="width:50px; height:35px; cursor:pointer;">
   <input type="text" id="cardBorderText" value="#111111" placeholder="#000000" style="width:100px; font-family:monospace;">
-  <!-- <span id="cardBorderDisplay" style="padding:4px 12px; background-color:#111111; border:1px solid #ccc; border-radius:4px; font-family:monospace; font-size:12px; color:#ffffff;">#111111</span> -->
+
 </div>
  </div>
 
@@ -320,7 +320,8 @@ button:active{
 </div>
 <div class="preview-column">
   <div class="preview-title"> Signature Preview</div>
-  <div id="signatureWrapper">
+  <div id="signatureWrapper" style="display: block;">
+
 <br>
 
 <!-- ================= EXACT SIGNATURE ================= -->
@@ -334,12 +335,12 @@ button:active{
                         <table id = "sigCard" style="background:rgba(1,1,1, 0.2); border-radius: 10px; border: 3px solid #111;padding: 15px; text-align: center; height: 100%;">
                             <tr>
                                 <td>
-                                    <img id="s_img" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 3px 10px rgba(0,0,0,0.55); display: block; margin: 0 auto 12px;">
+                                    <img id="s_img" src="https://lh3.googleusercontent.com/d/19moIcxYpv6rC508rJyzF4CRe_vtR4Ej5" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 3px 10px rgba(0,0,0,0.55); display: block; margin: 0 auto 12px;">
                                     <table style="width: 100%; border-collapse: collapse;">
-                                      <tr> <td id="s_name" nowrap style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px; padding: 0;"></td> </tr>
+                                      <tr> <td id="s_name" nowrap style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px; padding: 0;">Test Name</td> </tr>
                                   </table>
                                     <div style="font-size: 12px; color: #666; line-height: 1.4;"></div>
-                                    <div id = "s_title" style="font-size: 12px; font-weight: bold; color: #000; margin-top: 10px; padding-top: 8px; border-top: 2px solid #000;"></div>
+                                    <div id = "s_title" style="font-size: 12px; font-weight: bold; color: #000; margin-top: 10px; padding-top: 8px; border-top: 2px solid #000;">Job Title</div>
                                 </td>
                             </tr>
                         </table>
@@ -448,7 +449,7 @@ button:active{
                                         <tr>
                                             <td style="width:24px; min-width:24px; text-align:center; vertical-align:top; color:white; font-size:12px; padding-right:10px;">
                               <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;"></td>
-                                            <td><a href="tel:+14699603171" style="color: white; font-size: 12px; white-space: nowrap; text-decoration: none;" id = "s_phone"></a></td>
+                                            <td><a href="tel:+14699603171" style="color: white; font-size: 12px; white-space: nowrap; text-decoration: none;" id = "s_phone">(123) 456-7890</a></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -459,7 +460,7 @@ button:active{
                                         <tr>
                                             <td style="width:24px; min-width:24px; text-align:center; vertical-align:top; color:white; font-size:12px; padding-right:10px;">
                                                   <img src="https://img.icons8.com/ios-filled/20/ffffff/new-post.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;"></td>
-                                            <td> <a href="mailto:bhuwan@teamenoch.com" style="color: white; font-size: 12px; text-decoration: none;" id = "s_email"></a></td>
+                                            <td> <a href="mailto:bhuwan@teamenoch.com" style="color: white; font-size: 12px; text-decoration: none;" id = "s_email">email@example.com</a></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -470,7 +471,7 @@ button:active{
                                         <tr>
                                             <td style="width:24px; min-width:24px; text-align:center; vertical-align:top; color:white; font-size:12px; padding-right:10px;">
                                             <img src="https://img.icons8.com/ios-filled/20/ffffff/marker.png" width="14" height="14" alt="Location logo" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;"></td>
-                                            <td><a href="https://www.google.com/maps/search/?api=1&query=4310+Wiley+Post+Rd+Suite+210+Addison+Texas+75001" target="_blank" style="color: white; font-size: 12px; text-decoration: none;" id = "s_address"></a></td>
+                                            <td><a href="#" target="_blank" style="color: white; font-size: 12px; text-decoration: none;" id = "s_address">Select an Address</a></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -489,7 +490,6 @@ button:active{
 </div>
 
 <script>
-  let signatureGenerated = false;
   const sigOuter = document.getElementById("sigOuter");
 function formatPhone(input) {
   let digits = input.value.replace(/\D/g, '').slice(0, 10);
@@ -551,14 +551,22 @@ document.getElementById("img").addEventListener("change", async function(e) {
     
     if (data.success) {
       uploadedPhotoURL = data.url; // Store the URL
-      statusDiv.innerHTML = '<span style="color: #4CAF50;">✓ Photo uploaded successfully!</span>';
+      s_img.src = data.url;
+      statusDiv.innerHTML = '<span style="color: #4CAF50;"> Photo uploaded successfully!</span>';
     } else {
       statusDiv.innerHTML = '<span style="color: #f44336;">✗ Upload failed: ' + data.message + '</span>';
       uploadedPhotoURL = null;
     }
   } catch (error) {
-    statusDiv.innerHTML = '<span style="color: #f44336;">✗ Upload failed: ' + error.message + '</span>';
-    uploadedPhotoURL = null;
+     // Fallback: use local preview
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    uploadedPhotoURL = e.target.result;
+    s_img.src = e.target.result; // Update image immediately
+    statusDiv.innerHTML = '<span style="color: #4CAF50;">✓ Photo loaded (local preview)</span>';
+  };
+    reader.readAsDataURL(file);
+
   }
 });
 
@@ -586,12 +594,11 @@ document.getElementById("bgImageInput").addEventListener("change", async functio
     
     if (data.success) {
       uploadedBgImageURL = data.url; // Store the URL
-      statusDiv.innerHTML = '<span style="color: #4CAF50;">✓ Background uploaded successfully!</span>';
+      statusDiv.innerHTML = '<span style="color: #4CAF50;"> Background uploaded successfully!</span>';
       
       // Apply it immediately if signature is generated
-      if (signatureGenerated) {
         applyBackgroundImage(data.url);
-      }
+      
     } else {
       statusDiv.innerHTML = '<span style="color: #f44336;">✗ Upload failed: ' + data.message + '</span>';
       uploadedBgImageURL = null;
@@ -604,9 +611,54 @@ document.getElementById("bgImageInput").addEventListener("change", async functio
 
 
 
-function generate(){
-  // Get values
-  const imgFile = document.getElementById("img").files[0];
+
+function liveUpdateSignature() {
+
+  const nameVal = document.getElementById("name").value.trim();
+  const titleVal = document.getElementById("title").value.trim();
+  const phoneVal = document.getElementById("phone").value.trim();
+  const emailVal = document.getElementById("email").value.trim();
+
+  const select = document.getElementById("address");
+  const selectedAddress = select.options[select.selectedIndex];
+
+    // Update name
+  s_name.textContent = nameVal || "John Doe";
+
+    // Update title
+  s_title.textContent = titleVal || "Job Title";
+
+  //update phone
+  if (phoneVal) {
+    s_phone.textContent = phoneVal;
+    s_phone.href = "tel:" + phoneVal.replace(/\D/g, '');
+  } else {
+    s_phone.textContent = "(123) 456-7890";
+    s_phone.href = "tel:+11234567890";
+  }
+  //update email
+  if (emailVal) {
+    s_email.textContent = emailVal;
+    s_email.href = "mailto:" + emailVal;
+  }else {
+    s_email.textContent = "email@example.com";
+    s_
+    email.href = "mailto:email@example.com";
+  }
+  //update address
+
+  if (selectedAddress && selectedAddress.value) {
+    s_address.textContent = selectedAddress.value;
+    s_address.href = selectedAddress.getAttribute("data-link");
+  }else {
+    s_address.textContent = "Select an address";
+    s_address.href = "#";
+  }
+
+    updateQRCode();
+}
+
+function updateQRCode() {
   const nameVal = document.getElementById("name").value.trim();
   const titleVal = document.getElementById("title").value.trim();
   const companyVal = document.getElementById("company").value.trim();
@@ -614,98 +666,47 @@ function generate(){
   const emailVal = document.getElementById("email").value.trim();
   const select = document.getElementById("address");
   const selectedAddress = select.options[select.selectedIndex];
-
-  if(!selectedAddress.value) {
-    alert("please select an address");
-    return;
-  }
-  // Check if photo was uploaded
-if(!uploadedPhotoURL) {
-  alert("Please wait for the photo to upload or select a photo.");
-  return;
-}
-
-  // Check if all fields are filled
-  if(!nameVal || !companyVal || !titleVal || !phoneVal || !emailVal ){
-    alert("All fields are required to generate the email signature.");
-    return;
-  }
-
-  // Email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if(!emailRegex.test(emailVal)){
-    alert("Please enter a valid email address (e.g., user@example.com)");
-    return;
-  }
-
-  // Phone validation - only numbers, spaces, hyphens, parentheses, and plus sign allowed
-  const phoneRegex = /^[\d\s\-\(\)\+]+$/;
-  if(!phoneRegex.test(phoneVal)){
-    alert("Phone number should contain only numbers and these characters: + - ( ) and spaces");
-    return;
-  }
-
-  // Check if phone has at least 10 digits
-  const digitsOnly = phoneVal.replace(/\D/g, '');
-  if(digitsOnly.length < 10){
-    alert("Phone number should contain at least 10 digits");
-    return;
-  }
-
-  const locationName = selectedAddress.value;
-  const locationLink = selectedAddress.getAttribute("data-link");
-  const addressVal = locationName;
-
-
-  const vCardData = generateVCard(nameVal, emailVal, phoneVal, addressVal, titleVal, companyVal);
   
-  // Update QR code image with vCard data
-  const qrImg = document.querySelector('img[src*="qrserver"]');
-  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${vCardData}`;
-
-
-  // Set values in signature
-  s_img.src = uploadedPhotoURL;
-  s_name.textContent = nameVal;
-  s_title.textContent = titleVal;
-  s_phone.textContent = phoneVal;
-  s_email.textContent = emailVal;
-  s_address.textContent = addressVal;
-  s_address.href = locationLink;
-
-  // Update email and phone href attributes
-  s_phone.href = "tel:" + phoneVal.replace(/\D/g, '');
-  s_email.href = "mailto:" + emailVal;
-
-  document.getElementById("signatureWrapper").style.display="block";
-  signatureGenerated = true;
-
+  // Only update QR if we have all required data
+  if (nameVal && titleVal && phoneVal && emailVal && selectedAddress.value) {
+    const vCardData = generateVCard(nameVal, emailVal, phoneVal, selectedAddress.value, titleVal, companyVal);
+    const qrImg = document.querySelector('img[src*="qrserver"]');
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${vCardData}`;
+  }
 }
-function liveUpdateSignature() {
-  if (!signatureGenerated) return;
 
-  const nameVal = document.getElementById("name").value.trim();
-  const titleVal = document.getElementById("title").value.trim();
-  const phoneVal = document.getElementById("phone").value.trim();
-  const emailVal = document.getElementById("email").value.trim();
-
-  const select = document.getElementById("address");
-  const selectedAddress = select.options[select.selectedIndex];
-
-  if (nameVal) s_name.textContent = nameVal;
-  if (titleVal) s_title.textContent = titleVal;
-  if (phoneVal) {
-    s_phone.textContent = phoneVal;
-    s_phone.href = "tel:" + phoneVal.replace(/\D/g, '');
+function copySignatureHTML() {
+  // Get the entire signature table HTML
+  const signatureTable = document.querySelector('#signatureWrapper table');
+  
+  if (!signatureTable) {
+    alert('Signature not found!');
+    return;
   }
-  if (emailVal) {
-    s_email.textContent = emailVal;
-    s_email.href = "mailto:" + emailVal;
+  
+  // Get the outer HTML of the table
+  const htmlCode = signatureTable.outerHTML;
+  
+  // Create a temporary textarea to copy the HTML
+  const tempTextarea = document.createElement('textarea');
+  tempTextarea.value = htmlCode;
+  tempTextarea.style.position = 'fixed';
+  tempTextarea.style.opacity = '0';
+  document.body.appendChild(tempTextarea);
+  
+  // Select and copy
+  tempTextarea.select();
+  tempTextarea.setSelectionRange(0, 99999); // For mobile devices
+  
+  try {
+    document.execCommand('copy');
+    alert('✓ HTML code copied to clipboard!\n\nYou can now paste it into your email client signature settings.');
+  } catch (err) {
+    alert('Failed to copy. Please try again.');
   }
-  if (selectedAddress && selectedAddress.value) {
-    s_address.textContent = selectedAddress.value;
-    s_address.href = selectedAddress.getAttribute("data-link");
-  }
+  
+  // Remove the temporary textarea
+  document.body.removeChild(tempTextarea);
 }
 ["name", "title", "phone", "email", "address"].forEach(id => {
   document.getElementById(id).addEventListener("input", liveUpdateSignature);
@@ -713,7 +714,6 @@ function liveUpdateSignature() {
 });
 
 function updateSignatureColorsAndFont() {
-  if (!signatureGenerated) return;
 
   const fontSizeName = document.getElementById("fontSizeName").value + "px";
   const fontSizeContact = document.getElementById("fontSizeContact").value + "px";
@@ -752,7 +752,6 @@ function updateSignatureColorsAndFont() {
 }
 
 function applyBackgroundColor(color) {
-  if (!signatureGenerated) return;
 
   sigOuter.style.backgroundImage = "none"; // important even if image is unused
   sigOuter.style.backgroundColor = color;
@@ -775,7 +774,6 @@ bgColorText.addEventListener("input", () => {
 });
 
 function applyBackgroundImage(imageUrl) {
-  if (!signatureGenerated) return;
   
   sigOuter.style.backgroundColor = ""; // Clear color
   sigOuter.style.backgroundImage = `url('${imageUrl}')`;
@@ -790,12 +788,14 @@ function syncColor(pickerId, textId) {
 
   picker.addEventListener("input", () => {
     text.value = picker.value;
+    picker.style.backgroundColor = picker.value; // Update box background
     updateSignatureColorsAndFont();
   });
 
   text.addEventListener("input", () => {
     if (/^#[0-9A-Fa-f]{6}$/.test(text.value)) {
       picker.value = text.value;
+      picker.style.backgroundColor = text.value; // Update box background
       updateSignatureColorsAndFont();
     }
   });
@@ -805,6 +805,7 @@ syncColor("fontColorProfilePicker", "fontColorProfileText");
 syncColor("fontColorContactPicker", "fontColorContactText");
 syncColor("cardColorPicker", "cardColorText");
 syncColor("cardBorderPicker", "cardBorderText");
+syncColor("bgColorPicker", "bgColorText")
 
 // Font size controls
 document.getElementById("fontSizeName").addEventListener("input", updateSignatureColorsAndFont);
@@ -817,7 +818,6 @@ const bgImageControls = document.getElementById("bgImageControls");
 
 bgTypeRadios.forEach(radio => {
   radio.addEventListener("change", () => {
-    if (!signatureGenerated) return;
 
     if (radio.value === "color" && radio.checked) {
       bgColorControls.style.display = "block";
@@ -838,7 +838,14 @@ bgTypeRadios.forEach(radio => {
   });
 });
 
+// Set initial background colors for color pickers
+document.getElementById("fontColorProfilePicker").style.backgroundColor = "#ffffff";
+document.getElementById("fontColorContactPicker").style.backgroundColor = "#ffffff";
+document.getElementById("cardColorPicker").style.backgroundColor = "#1a1a1a";
+document.getElementById("cardBorderPicker").style.backgroundColor = "#111111";
+document.getElementById("bgColorPicker").style.backgroundColor = "#737578";
 </script>
 
 </body>
 </html>
+S

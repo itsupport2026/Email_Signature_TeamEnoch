@@ -22,7 +22,7 @@ crossorigin="anonymous"/>
 }
 
 .container{
-  max-width: 1300px;
+  max-width: 1500px;
   margin: auto;
   background: #fff;
   padding: 20px;
@@ -155,11 +155,11 @@ button:active{
 <div style = "display: flex; justify-content:flex-start">
 <div >
   <label>Full Name <span style = "color:red">*</span></label>
-<input type = "text" id="name" required>
+<input type = "text" id="name" required style = "width: 300px;">
 </div> 
 
-<div style ="margin-left: 40px"> <label>Job Title <span style = "color:red">*</span></label>
-<input type = "text" id="title" required>
+<div style ="margin-left: 15px"> <label>Job Title <span style = "color:red">*</span></label>
+<input type = "text" id="title" required style = "width: 300px;">
 </div>
 
 
@@ -178,11 +178,12 @@ button:active{
   pattern="\(\d{3}\) \d{3}-\d{4}"
   title="Phone number must be in the format (XXX) XXX-XXXX"
   oninput="formatPhone(this)"
+  style = "width: 300px;"
 >
 </div>
-<div style ="margin-left: 40px;"> 
+<div style ="margin-left: 15px;"> 
 <label>Email <span style = "color:red">*</span></label>
-<input type = "email" id="email" placeholder="e.g., user@example.com" required>
+<input type = "email" id="email" placeholder="e.g., user@example.com" required style = "width: 300px;">
 </div>
 </div>
 
@@ -209,54 +210,75 @@ button:active{
 
 <h3 style="margin-bottom:10px;">Signature Customization</h3>
 
+<div style ="display:flex;"> 
 <!-- Font Size -->
+<div> 
 <label>Font Size</label>
-<select id="fontSize" style="width:100%; padding:10px; margin-bottom:10px;">
+<select id="fontSize" style="width:200px; padding:10px; margin-bottom:10px;">
   <option value="12px">Small</option>
   <option value="14px" selected>Medium</option>
   <option value="16px">Large</option>
 </select>
+ </div>
 
 <!-- Font Color -->
+ <div style = "margin-left: 40px;"> 
 <label>Font Color</label>
-<div style="display:flex; gap:10px; margin-bottom:10px;">
-  <input type="color" id="fontColorPicker" value="#ffffff">
-  <input type="text" id="fontColorText" value="#ffffff" style="flex:1;">
+<div style="display:flex; gap:10px; margin-bottom:10px; align-items:center;">
+  <input type="color" id="fontColorPicker" value="#ffffff" style="width:50px; height:35px; cursor:pointer;">
+  <input type="text" id="fontColorText" value="#ffffff" placeholder="#000000" style="width:100px; font-family:monospace;">
+  <!-- <span id="fontColorDisplay" style="padding:4px 12px; background-color:#ffffff; border:1px solid #ccc; border-radius:4px; font-family:monospace; font-size:12px;">#ffffff</span> -->
+</div>
+ </div>
+
 </div>
 
-<!-- Card Background Color -->
-<label>Card Color</label>
-<div style="display:flex; gap:10px; margin-bottom:10px;">
-  <input type="color" id="cardColorPicker" value="#1a1a1a">
-  <input type="text" id="cardColorText" value="#1a1a1a" style="flex:1;">
+
+<div style = "display: flex;"> 
+  <!-- Card Background Color -->
+ <div>
+  <label>Card Color</label>
+<div style="display:flex; gap:10px; margin-bottom:10px; align-items:center; width: 200px;">
+  <input type="color" id="cardColorPicker" value="#1a1a1a" style="width:50px; height:35px; cursor:pointer;">
+  <input type="text" id="cardColorText" value="#1a1a1a" placeholder="#000000" style="width:100px; font-family:monospace;">
+  <!-- <span id="cardColorDisplay" style="padding:4px 12px; background-color:#1a1a1a; border:1px solid #ccc; border-radius:4px; font-family:monospace; font-size:12px; color:#ffffff;">#1a1a1a</span> -->
 </div>
+ </div>  
+
 
 <!-- Card Border Color -->
-<label>Card Border Color</label>
-<div style="display:flex; gap:10px; margin-bottom:10px;">
-  <input type="color" id="cardBorderPicker" value="#111111">
-  <input type="text" id="cardBorderText" value="#111111" style="flex:1;">
+ <div style = "margin-left: 40px;"> 
+  <label>Card Border Color</label>
+<div style="display:flex; gap:10px; margin-bottom:10px; align-items:center;">
+  <input type="color" id="cardBorderPicker" value="#111111" style="width:50px; height:35px; cursor:pointer;">
+  <input type="text" id="cardBorderText" value="#111111" placeholder="#000000" style="width:100px; font-family:monospace;">
+  <!-- <span id="cardBorderDisplay" style="padding:4px 12px; background-color:#111111; border:1px solid #ccc; border-radius:4px; font-family:monospace; font-size:12px; color:#ffffff;">#111111</span> -->
 </div>
+ </div>
+
+</div>
+
 <hr style="margin:25px 0">
 
-<h3 style="margin-bottom:10px;">Background</h3>
-
-<label style="display:block; margin-bottom:6px;">
-  <input type="radio" name="bgType" value="color" checked>
+<h3 style="margin-bottom:4px;">Background</h3>
+<div style = "display: grid;"> 
+  <label style="display: inline-flex; align-items: center;">
+  <input type="radio" name="bgType" value="color" checked style ="width: 30px;">
   Background Color
 </label>
 
-<label style="display:block; margin-bottom:10px;">
-  <input type="radio" name="bgType" value="image">
+<label style="display: inline-flex; align-items: center;">
+  <input type="radio" name="bgType" value="image" style ="width: 30px;">
   Background Image
 </label>
+</div>
 
 <!-- Background color picker -->
 <div id="bgColorControls">
   <label>Background Color</label>
   <div style="display:flex; gap:10px;">
-    <input type="color" id="bgColorPicker" value="#737578">
-    <input type="text" id="bgColorText" value="#737578" style="flex:1;">
+    <input type="color" id="bgColorPicker" value="#737578" style ="width: 50px; height: 35px; cursor: pointer;">
+    <input type="text" id="bgColorText" value="#737578" placeholder="#000000" style = "width: 100px; font-family: monospace;">
   </div>
 </div>
 

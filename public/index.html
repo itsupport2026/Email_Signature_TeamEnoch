@@ -253,6 +253,8 @@ button:active{
 <div id="bgImageControls" style="display:none;">
   <label>Upload Background Image</label>
   <input type="file" id="bgImageInput" accept="image/*">
+  <div id="bgUploadStatus" style="margin-top: 5px; font-size: 13px;"></div>
+
 </div>
 
 
@@ -443,6 +445,7 @@ function formatPhone(input) {
 }
   
 let uploadedPhotoURL = null;
+let uploadedBgImageURL = null;
 
 function generateVCard(name, email, phone, address, title, company) {
   // Remove any extra digits from phone for proper formatting
@@ -499,6 +502,48 @@ document.getElementById("img").addEventListener("change", async function(e) {
     uploadedPhotoURL = null;
   }
 });
+
+// Listen for when user selects a background image
+document.getElementById("bgImageInput").addEventListener("change", async function(e) {
+  const file = e.target.files[0];
+  
+  if (!file) return;
+  
+  const statusDiv = document.getElementById("bgUploadStatus");
+  statusDiv.innerHTML = '<span style="color: #ff9800;">⏳ Uploading background image...</span>';
+  
+  // Create FormData
+  const formData = new FormData();
+  formData.append('photo', file);
+  
+  try {
+    // Upload to your API
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      uploadedBgImageURL = data.url; // Store the URL
+      statusDiv.innerHTML = '<span style="color: #4CAF50;">✓ Background uploaded successfully!</span>';
+      
+      // Apply it immediately if signature is generated
+      if (signatureGenerated) {
+        applyBackgroundImage(data.url);
+      }
+    } else {
+      statusDiv.innerHTML = '<span style="color: #f44336;">✗ Upload failed: ' + data.message + '</span>';
+      uploadedBgImageURL = null;
+    }
+  } catch (error) {
+    statusDiv.innerHTML = '<span style="color: #f44336;">✗ Upload failed: ' + error.message + '</span>';
+    uploadedBgImageURL = null;
+  }
+});
+
+
 
 function generate(){
   // Get values
@@ -651,6 +696,16 @@ bgColorText.addEventListener("input", () => {
   }
 });
 
+function applyBackgroundImage(imageUrl) {
+  if (!signatureGenerated) return;
+  
+  sigOuter.style.backgroundColor = ""; // Clear color
+  sigOuter.style.backgroundImage = `url('${imageUrl}')`;
+  sigOuter.style.backgroundSize = "cover";
+  sigOuter.style.backgroundRepeat = "no-repeat";
+  sigOuter.style.backgroundPosition = "center";
+}
+
 function syncColor(pickerId, textId) {
   const picker = document.getElementById(pickerId);
   const text = document.getElementById(textId);
@@ -674,6 +729,7 @@ syncColor("cardBorderPicker", "cardBorderText");
 
 document.getElementById("fontSize").addEventListener("change", updateSignatureColorsAndFont);
 
+
 const bgTypeRadios = document.querySelectorAll('input[name="bgType"]');
 const bgColorControls = document.getElementById("bgColorControls");
 const bgImageControls = document.getElementById("bgImageControls");
@@ -682,21 +738,24 @@ bgTypeRadios.forEach(radio => {
   radio.addEventListener("change", () => {
     if (!signatureGenerated) return;
 
-   if (radio.value === "color" && radio.checked) {
-  bgColorControls.style.display = "block";
-  bgImageControls.style.display = "none";
+    if (radio.value === "color" && radio.checked) {
+      bgColorControls.style.display = "block";
+      bgImageControls.style.display = "none";
 
-  applyBackgroundColor(bgColorText.value);
-}
-
+      applyBackgroundColor(bgColorText.value);
+    }
 
     if (radio.value === "image" && radio.checked) {
       bgColorControls.style.display = "none";
       bgImageControls.style.display = "block";
+
+      
+      if (uploadedBgImageURL) {
+        applyBackgroundImage(uploadedBgImageURL);
+      }
     }
   });
 });
-
 
 </script>
 

@@ -22,7 +22,7 @@ crossorigin="anonymous"/>
 }
 
 .container{
-  max-width: 1000px;
+  max-width: 1300px;
   margin: auto;
   background: #fff;
   padding: 20px;
@@ -96,10 +96,46 @@ button:active{
 
 #signatureWrapper{
   display: none;
-  margin-top: 40px;
-  padding-top: 30px;
-  border-top: 2px solid #f0f0f0;
 }
+.main-layout{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.form-column{
+  max-height: calc(100vh - 160px);
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.preview-column{
+  position: sticky;
+  top: 20px;
+  background: #fafafa;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.preview-title{
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* Mobile fallback */
+@media (max-width: 900px){
+  .main-layout{
+    grid-template-columns: 1fr;
+  }
+
+  .preview-column{
+    position: static;
+  }
+}
+
 </style>
 </head>
 
@@ -107,6 +143,10 @@ button:active{
 <div class="container">
 
 <h2>Email Signature Generator</h2>
+<div class="main-layout">
+
+  <!-- LEFT: FORM -->
+<div class = "form-column">
 
 <label>Profile Image <span style = "color:red">*</span></label>
 <input type="file" id="img" accept="image/*" required>
@@ -121,7 +161,16 @@ button:active{
 <input type="hidden" id="company" value="Team Enoch">
 
 <label>Personal Phone <span style = "color:red">*</span></label>
-<input type = "tel" id="phone" placeholder="e.g: (123) 456-7890" required>
+<input
+  type="tel"
+  id="phone"
+  placeholder="(123) 456-7890"
+  maxlength="14"
+  required
+  pattern="\(\d{3}\) \d{3}-\d{4}"
+  title="Phone number must be in the format (XXX) XXX-XXXX"
+  oninput="formatPhone(this)"
+>
 
 <label>Email <span style = "color:red">*</span></label>
 <input type = "email" id="email" placeholder="e.g., user@example.com" required>
@@ -146,8 +195,10 @@ button:active{
 <br>
 <button onclick="generate()">Generate Signature</button>
 
-<div id="signatureWrapper">
-
+</div>
+<div class="preview-column">
+  <div class="preview-title"> Signature Preview</div>
+  <div id="signatureWrapper">
 <br>
 
 <!-- ================= EXACT SIGNATURE ================= -->
@@ -312,8 +363,23 @@ button:active{
 
 </div>
 </div>
+</div>
+</div>
 
 <script>
+  let signatureGenerated = false;
+function formatPhone(input) {
+  let digits = input.value.replace(/\D/g, '').slice(0, 10);
+
+  if (digits.length >= 6) {
+    input.value = `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
+  } else if (digits.length >= 3) {
+    input.value = `(${digits.slice(0,3)}) ${digits.slice(3)}`;
+  } else {
+    input.value = digits;
+  }
+}
+  
 let uploadedPhotoURL = null;
 
 function generateVCard(name, email, phone, address, title, company) {
@@ -446,7 +512,41 @@ if(!uploadedPhotoURL) {
   s_email.href = "mailto:" + emailVal;
 
   document.getElementById("signatureWrapper").style.display="block";
+  signatureGenerated = true;
+
 }
+function liveUpdateSignature() {
+  if (!signatureGenerated) return;
+
+  const nameVal = document.getElementById("name").value.trim();
+  const titleVal = document.getElementById("title").value.trim();
+  const phoneVal = document.getElementById("phone").value.trim();
+  const emailVal = document.getElementById("email").value.trim();
+
+  const select = document.getElementById("address");
+  const selectedAddress = select.options[select.selectedIndex];
+
+  if (nameVal) s_name.textContent = nameVal;
+  if (titleVal) s_title.textContent = titleVal;
+  if (phoneVal) {
+    s_phone.textContent = phoneVal;
+    s_phone.href = "tel:" + phoneVal.replace(/\D/g, '');
+  }
+  if (emailVal) {
+    s_email.textContent = emailVal;
+    s_email.href = "mailto:" + emailVal;
+  }
+  if (selectedAddress && selectedAddress.value) {
+    s_address.textContent = selectedAddress.value;
+    s_address.href = selectedAddress.getAttribute("data-link");
+  }
+}
+["name", "title", "phone", "email", "address"].forEach(id => {
+  document.getElementById(id).addEventListener("input", liveUpdateSignature);
+  document.getElementById(id).addEventListener("change", liveUpdateSignature);
+});
+
+
 </script>
 
 </body>

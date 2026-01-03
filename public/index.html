@@ -226,6 +226,35 @@ button:active{
   <input type="color" id="cardBorderPicker" value="#111111">
   <input type="text" id="cardBorderText" value="#111111" style="flex:1;">
 </div>
+<hr style="margin:25px 0">
+
+<h3 style="margin-bottom:10px;">Background</h3>
+
+<label style="display:block; margin-bottom:6px;">
+  <input type="radio" name="bgType" value="color" checked>
+  Background Color
+</label>
+
+<label style="display:block; margin-bottom:10px;">
+  <input type="radio" name="bgType" value="image">
+  Background Image
+</label>
+
+<!-- Background color picker -->
+<div id="bgColorControls">
+  <label>Background Color</label>
+  <div style="display:flex; gap:10px;">
+    <input type="color" id="bgColorPicker" value="#737578">
+    <input type="text" id="bgColorText" value="#737578" style="flex:1;">
+  </div>
+</div>
+
+<!-- Background image upload -->
+<div id="bgImageControls" style="display:none;">
+  <label>Upload Background Image</label>
+  <input type="file" id="bgImageInput" accept="image/*">
+</div>
+
 
 </div>
 <div class="preview-column">
@@ -237,7 +266,7 @@ button:active{
 <table style="max-width: 450px; margin: 0; border-collapse: collapse; font-family: Arial, sans-serif;">
     <tr>
         <!-- <td style="background-image:url('https://lh3.googleusercontent.com/d/12PtYcQCcT3dDVahn3HFoI5LrB-j0x6jF');  border-radius: 12px; padding: 5px;background-size:cover; background-repeat: no-repeat;background-attachment: fixed;background-position: center;"> -->
-        <td style="background-color: #737578 ;border-radius: 12px; padding: 5px;">
+        <td id="sigOuter" style="background-color: #737578 ;border-radius: 12px; padding: 5px;">
             <table style="width: 100%; border-collapse: collapse;">
                 <tr>
                     <td style="vertical-align: middle; padding-right: 12px; width:280px; height:100% ">
@@ -400,6 +429,7 @@ button:active{
 
 <script>
   let signatureGenerated = false;
+  const sigOuter = document.getElementById("sigOuter");
 function formatPhone(input) {
   let digits = input.value.replace(/\D/g, '').slice(0, 10);
 
@@ -598,6 +628,29 @@ function updateSignatureColorsAndFont() {
   sigCard.style.backgroundColor = cardColor;
   sigCard.style.borderColor = cardBorder;
 }
+function applyBackgroundColor(color) {
+  if (!signatureGenerated) return;
+
+  sigOuter.style.backgroundImage = "none"; // important even if image is unused
+  sigOuter.style.backgroundColor = color;
+}
+
+const bgColorPicker = document.getElementById("bgColorPicker");
+const bgColorText = document.getElementById("bgColorText");
+
+bgColorPicker.addEventListener("input", () => {
+  bgColorText.value = bgColorPicker.value;
+  applyBackgroundColor(bgColorPicker.value);
+});
+
+bgColorText.addEventListener("input", () => {
+  const val = bgColorText.value.trim();
+  if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+    bgColorPicker.value = val;
+    applyBackgroundColor(val);
+  }
+});
+
 function syncColor(pickerId, textId) {
   const picker = document.getElementById(pickerId);
   const text = document.getElementById(textId);
@@ -620,6 +673,29 @@ syncColor("cardColorPicker", "cardColorText");
 syncColor("cardBorderPicker", "cardBorderText");
 
 document.getElementById("fontSize").addEventListener("change", updateSignatureColorsAndFont);
+
+const bgTypeRadios = document.querySelectorAll('input[name="bgType"]');
+const bgColorControls = document.getElementById("bgColorControls");
+const bgImageControls = document.getElementById("bgImageControls");
+
+bgTypeRadios.forEach(radio => {
+  radio.addEventListener("change", () => {
+    if (!signatureGenerated) return;
+
+   if (radio.value === "color" && radio.checked) {
+  bgColorControls.style.display = "block";
+  bgImageControls.style.display = "none";
+
+  applyBackgroundColor(bgColorText.value);
+}
+
+
+    if (radio.value === "image" && radio.checked) {
+      bgColorControls.style.display = "none";
+      bgImageControls.style.display = "block";
+    }
+  });
+});
 
 
 </script>

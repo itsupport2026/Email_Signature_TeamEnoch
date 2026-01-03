@@ -152,15 +152,23 @@ button:active{
 <input type="file" id="img" accept="image/*" required>
 <div id="uploadStatus" style="margin-top: 2px; margin-bottom: 15px; font-size: 13px;"></div>
 
-<label>Full Name <span style = "color:red">*</span></label>
+<div style = "display: flex; justify-content:flex-start">
+<div >
+  <label>Full Name <span style = "color:red">*</span></label>
 <input type = "text" id="name" required>
+</div> 
 
-<label>Job Title <span style = "color:red">*</span></label>
+<div style ="margin-left: 40px"> <label>Job Title <span style = "color:red">*</span></label>
 <input type = "text" id="title" required>
+</div>
 
+
+</div>
 <input type="hidden" id="company" value="Team Enoch">
 
-<label>Personal Phone <span style = "color:red">*</span></label>
+<div style = "display:flex;justify-content:flex-start;"> 
+<div > 
+  <label>Personal Phone <span style = "color:red">*</span></label>
 <input
   type="tel"
   id="phone"
@@ -171,9 +179,12 @@ button:active{
   title="Phone number must be in the format (XXX) XXX-XXXX"
   oninput="formatPhone(this)"
 >
-
+</div>
+<div style ="margin-left: 40px;"> 
 <label>Email <span style = "color:red">*</span></label>
 <input type = "email" id="email" placeholder="e.g., user@example.com" required>
+</div>
+</div>
 
 
 <label>
@@ -749,7 +760,7 @@ bgTypeRadios.forEach(radio => {
       bgColorControls.style.display = "none";
       bgImageControls.style.display = "block";
 
-      
+
       if (uploadedBgImageURL) {
         applyBackgroundImage(uploadedBgImageURL);
       }

@@ -205,7 +205,6 @@ button:active{
 
 </select>
 <br>
-<button onclick="copySignatureHTML()">Copy HTML Code</button>
 <hr style="margin:25px 0">
 
 <h3 style="margin-bottom:10px;">Signature Customization</h3>
@@ -327,7 +326,6 @@ button:active{
 <!-- ================= EXACT SIGNATURE ================= -->
 <table style="max-width: 450px; margin: 0; border-collapse: collapse; font-family: Arial, sans-serif;">
     <tr>
-        <!-- <td style="background-image:url('https://lh3.googleusercontent.com/d/12PtYcQCcT3dDVahn3HFoI5LrB-j0x6jF');  border-radius: 12px; padding: 5px;background-size:cover; background-repeat: no-repeat;background-attachment: fixed;background-position: center;"> -->
         <td id="sigOuter" style="background-color: #737578 ;border-radius: 12px; padding: 5px;">
             <table style="width: 100%; border-collapse: collapse;">
                 <tr>
@@ -380,7 +378,6 @@ button:active{
                                 </div>
 
                                 <div style="margin-top:4px; white-space:nowrap;">
-                                  <!-- <i class="fa-solid fa-phone" style="font-size:12px; color:white; margin-right:6px;"></i> -->
                                   <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
                                   <a href="tel:+18178888880" style="color:white; font-size:12px; text-decoration:none;">
                                     DFW: (817) 888-8880
@@ -484,6 +481,13 @@ button:active{
     </tr>
 </table>
 
+<div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e5e7eb;">
+  <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">HTML Code</h3>
+  <p style="font-size: 13px; color: #666; margin-bottom: 10px;">Copy this code and paste it into your email client's signature settings:</p>
+  <textarea id="htmlCodeOutput" readonly style="width: 100%; height: 200px; font-family: monospace; font-size: 11px; padding: 12px; border: 1.5px solid #d0d5dd; border-radius: 8px; background: #f9fafb; resize: vertical; margin-bottom: 10px;"></textarea>
+  <button onclick="copyHTMLCode()" style="width: 100%;">Copy HTML to Clipboard</button>
+</div>
+
 </div>
 </div>
 </div>
@@ -507,10 +511,9 @@ let uploadedPhotoURL = null;
 let uploadedBgImageURL = null;
 
 function generateVCard(name, email, phone, address, title, company) {
-  // Remove any extra digits from phone for proper formatting
   const cleanPhone = phone.replace(/\D/g, '');
   
-  const vCard = `BEGIN:VCARD
+const vCard = `BEGIN:VCARD
 VERSION:3.0
 FN:${name}
 N:${name.split(' ').reverse().join(';')};;;
@@ -553,6 +556,7 @@ document.getElementById("img").addEventListener("change", async function(e) {
       uploadedPhotoURL = data.url; // Store the URL
       s_img.src = data.url;
       statusDiv.innerHTML = '<span style="color: #4CAF50;"> Photo uploaded successfully!</span>';
+      updateHTMLCodeDisplay(); 
     } else {
       statusDiv.innerHTML = '<span style="color: #f44336;">✗ Upload failed: ' + data.message + '</span>';
       uploadedPhotoURL = null;
@@ -563,7 +567,8 @@ document.getElementById("img").addEventListener("change", async function(e) {
   reader.onload = function(e) {
     uploadedPhotoURL = e.target.result;
     s_img.src = e.target.result; // Update image immediately
-    statusDiv.innerHTML = '<span style="color: #4CAF50;">✓ Photo loaded (local preview)</span>';
+    statusDiv.innerHTML = '<span style="color: #4CAF50;"> Photo loaded (local preview)</span>';
+    updateHTMLCodeDisplay();
   };
     reader.readAsDataURL(file);
 
@@ -596,8 +601,8 @@ document.getElementById("bgImageInput").addEventListener("change", async functio
       uploadedBgImageURL = data.url; // Store the URL
       statusDiv.innerHTML = '<span style="color: #4CAF50;"> Background uploaded successfully!</span>';
       
-      // Apply it immediately if signature is generated
-        applyBackgroundImage(data.url);
+      applyBackgroundImage(data.url);
+      updateHTMLCodeDisplay();
       
     } else {
       statusDiv.innerHTML = '<span style="color: #f44336;">✗ Upload failed: ' + data.message + '</span>';
@@ -608,9 +613,6 @@ document.getElementById("bgImageInput").addEventListener("change", async functio
     uploadedBgImageURL = null;
   }
 });
-
-
-
 
 function liveUpdateSignature() {
 
@@ -656,6 +658,7 @@ function liveUpdateSignature() {
   }
 
     updateQRCode();
+    updateHTMLCodeDisplay(); 
 }
 
 function updateQRCode() {
@@ -675,28 +678,25 @@ function updateQRCode() {
   }
 }
 
-function copySignatureHTML() {
-  // Get the entire signature table HTML
+function updateHTMLCodeDisplay() {
   const signatureTable = document.querySelector('#signatureWrapper table');
+  const htmlCodeOutput = document.getElementById('htmlCodeOutput');
   
-  if (!signatureTable) {
-    alert('Signature not found!');
+  if (signatureTable && htmlCodeOutput) {
+    htmlCodeOutput.value = signatureTable.outerHTML;
+  }
+}
+
+function copyHTMLCode() {
+  const htmlCodeOutput = document.getElementById('htmlCodeOutput');
+  
+  if (!htmlCodeOutput) {
+    alert('HTML code not found!');
     return;
   }
-  
-  // Get the outer HTML of the table
-  const htmlCode = signatureTable.outerHTML;
-  
-  // Create a temporary textarea to copy the HTML
-  const tempTextarea = document.createElement('textarea');
-  tempTextarea.value = htmlCode;
-  tempTextarea.style.position = 'fixed';
-  tempTextarea.style.opacity = '0';
-  document.body.appendChild(tempTextarea);
-  
-  // Select and copy
-  tempTextarea.select();
-  tempTextarea.setSelectionRange(0, 99999); // For mobile devices
+  // Select the text
+  htmlCodeOutput.select();
+  htmlCodeOutput.setSelectionRange(0, 99999); // For mobile devices
   
   try {
     document.execCommand('copy');
@@ -704,10 +704,8 @@ function copySignatureHTML() {
   } catch (err) {
     alert('Failed to copy. Please try again.');
   }
-  
-  // Remove the temporary textarea
-  document.body.removeChild(tempTextarea);
 }
+
 ["name", "title", "phone", "email", "address"].forEach(id => {
   document.getElementById(id).addEventListener("input", liveUpdateSignature);
   document.getElementById(id).addEventListener("change", liveUpdateSignature);
@@ -749,12 +747,14 @@ function updateSignatureColorsAndFont() {
   // Card
   sigCard.style.backgroundColor = cardColor;
   sigCard.style.borderColor = cardBorder;
+  updateHTMLCodeDisplay(); 
 }
 
 function applyBackgroundColor(color) {
 
-  sigOuter.style.backgroundImage = "none"; // important even if image is unused
+  sigOuter.style.backgroundImage = "none"; 
   sigOuter.style.backgroundColor = color;
+  updateHTMLCodeDisplay(); 
 }
 
 const bgColorPicker = document.getElementById("bgColorPicker");
@@ -776,10 +776,11 @@ bgColorText.addEventListener("input", () => {
 function applyBackgroundImage(imageUrl) {
   
   sigOuter.style.backgroundColor = ""; // Clear color
-  sigOuter.style.backgroundImage = `url('${imageUrl}')`;
+  sigOuter.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('${imageUrl}')`;
   sigOuter.style.backgroundSize = "cover";
   sigOuter.style.backgroundRepeat = "no-repeat";
   sigOuter.style.backgroundPosition = "center";
+  updateHTMLCodeDisplay();
 }
 
 function syncColor(pickerId, textId) {
@@ -811,7 +812,6 @@ syncColor("bgColorPicker", "bgColorText")
 document.getElementById("fontSizeName").addEventListener("input", updateSignatureColorsAndFont);
 document.getElementById("fontSizeContact").addEventListener("input", updateSignatureColorsAndFont);
 
-
 const bgTypeRadios = document.querySelectorAll('input[name="bgType"]');
 const bgColorControls = document.getElementById("bgColorControls");
 const bgImageControls = document.getElementById("bgImageControls");
@@ -837,15 +837,18 @@ bgTypeRadios.forEach(radio => {
     }
   });
 });
-
 // Set initial background colors for color pickers
 document.getElementById("fontColorProfilePicker").style.backgroundColor = "#ffffff";
 document.getElementById("fontColorContactPicker").style.backgroundColor = "#ffffff";
 document.getElementById("cardColorPicker").style.backgroundColor = "#1a1a1a";
 document.getElementById("cardBorderPicker").style.backgroundColor = "#111111";
 document.getElementById("bgColorPicker").style.backgroundColor = "#737578";
+
+window.addEventListener('DOMContentLoaded', function() {
+  updateHTMLCodeDisplay();
+});
+
 </script>
 
 </body>
 </html>
-S

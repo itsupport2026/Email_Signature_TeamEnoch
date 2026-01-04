@@ -240,6 +240,26 @@ button:active{
 </div>
 
 <div style="display:flex;"> 
+  <!-- Font Color for Job Title -->
+  <div> 
+    <label>Font Color - Job Title</label>
+    <div style="display:flex; gap:10px; margin-bottom:10px; align-items:center;">
+      <input type="color" id="fontColorTitlePicker" value="#000000" style="width:50px; height:35px; cursor:pointer;">
+      <input type="text" id="fontColorTitleText" value="#000000" placeholder="#000000" style="width:100px; font-family:monospace;">
+    </div>
+  </div>
+
+  <!-- Font Color for Texas/Florida -->
+  <div style="margin-left: 80px;"> 
+    <label>Font Color - Texas/Florida</label>
+    <div style="display:flex; gap:10px; margin-bottom:10px; align-items:center;">
+      <input type="color" id="fontColorHeadingPicker" value="#000000" style="width:50px; height:35px; cursor:pointer;">
+      <input type="text" id="fontColorHeadingText" value="#000000" placeholder="#000000" style="width:100px; font-family:monospace;">
+    </div>
+  </div>
+</div>
+
+<div style="display:flex;"> 
   <!-- Font Color for Profile (Name & Title) -->
   <div> 
     <label>Font Color - Profile</label>
@@ -373,7 +393,7 @@ button:active{
                             <tr>
                               <!-- TEXAS COLUMN -->
                               <td style="vertical-align: top; padding-right: 12px;">
-                                <div style="color:#000; font-weight:bold; font-size:18px; margin-bottom:6px;">
+                                <div id="texasHeading" style="color:#000; font-weight:bold; font-size:18px; margin-bottom:6px;">
                                   Texas
                                 </div>
 
@@ -408,7 +428,7 @@ button:active{
 
                               <!-- FLORIDA COLUMN -->
                               <td style="vertical-align: top; padding-left: 12px;">
-                                <div style="color:#000; font-weight:bold; font-size:18px; margin-bottom:6px;">
+                                <div id="floridaHeading" style="color:#000; font-weight:bold; font-size:18px; margin-bottom:6px;">
                                   Florida
                                 </div>
 
@@ -717,14 +737,18 @@ function updateSignatureColorsAndFont() {
   const fontSizeContact = document.getElementById("fontSizeContact").value + "px";
   const fontColorProfile = document.getElementById("fontColorProfileText").value;
   const fontColorContact = document.getElementById("fontColorContactText").value;
+  const fontColorTitle = document.getElementById("fontColorTitleText").value;
+  const fontColorHeading = document.getElementById("fontColorHeadingText").value;
   const cardColor = document.getElementById("cardColorText").value;
   const cardBorder = document.getElementById("cardBorderText").value;
 
-  // Profile section (Name & Title)
+  // Profile section - Name only
   s_name.style.fontSize = fontSizeName;
   s_name.style.color = fontColorProfile;
+
+  // Job Title
   s_title.style.fontSize = fontSizeName;
-  s_title.style.color = fontColorProfile;
+  s_title.style.color = fontColorTitle;
 
   // Last column - Contact details
   s_phone.style.fontSize = fontSizeContact;
@@ -744,11 +768,24 @@ function updateSignatureColorsAndFont() {
     }
   });
 
+  // Texas and Florida headings
+const texasHeading = document.getElementById('texasHeading');
+const floridaHeading = document.getElementById('floridaHeading');
+
+if (texasHeading) {
+  texasHeading.style.color = fontColorHeading;
+}
+if (floridaHeading) {
+  floridaHeading.style.color = fontColorHeading;
+}
+
+
   // Card
   sigCard.style.backgroundColor = cardColor;
   sigCard.style.borderColor = cardBorder;
   updateHTMLCodeDisplay(); 
 }
+
 
 function applyBackgroundColor(color) {
 
@@ -762,6 +799,7 @@ const bgColorText = document.getElementById("bgColorText");
 
 bgColorPicker.addEventListener("input", () => {
   bgColorText.value = bgColorPicker.value;
+  bgColorPicker.style.backgroundColor = bgColorPicker.value;
   applyBackgroundColor(bgColorPicker.value);
 });
 
@@ -769,6 +807,7 @@ bgColorText.addEventListener("input", () => {
   const val = bgColorText.value.trim();
   if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
     bgColorPicker.value = val;
+    bgColorPicker.style.backgroundColor = val;
     applyBackgroundColor(val);
   }
 });
@@ -804,9 +843,11 @@ function syncColor(pickerId, textId) {
 
 syncColor("fontColorProfilePicker", "fontColorProfileText");
 syncColor("fontColorContactPicker", "fontColorContactText");
+syncColor("fontColorTitlePicker", "fontColorTitleText");
+syncColor("fontColorHeadingPicker", "fontColorHeadingText");
 syncColor("cardColorPicker", "cardColorText");
 syncColor("cardBorderPicker", "cardBorderText");
-syncColor("bgColorPicker", "bgColorText")
+// syncColor("bgColorPicker", "bgColorText")
 
 // Font size controls
 document.getElementById("fontSizeName").addEventListener("input", updateSignatureColorsAndFont);
@@ -840,6 +881,8 @@ bgTypeRadios.forEach(radio => {
 // Set initial background colors for color pickers
 document.getElementById("fontColorProfilePicker").style.backgroundColor = "#ffffff";
 document.getElementById("fontColorContactPicker").style.backgroundColor = "#ffffff";
+document.getElementById("fontColorTitlePicker").style.backgroundColor = "#000000";
+document.getElementById("fontColorHeadingPicker").style.backgroundColor = "#000000";
 document.getElementById("cardColorPicker").style.backgroundColor = "#1a1a1a";
 document.getElementById("cardBorderPicker").style.backgroundColor = "#111111";
 document.getElementById("bgColorPicker").style.backgroundColor = "#737578";

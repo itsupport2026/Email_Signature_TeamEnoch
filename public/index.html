@@ -141,15 +141,15 @@ button:active{
 <div class="container">
 
 <h2>Email Signature Generator</h2>
-<div class="main-layout">
+<div class="main-layout" >
 
   <!-- LEFT: FORM -->
-<div class = "form-column">
+ <div class = "form-column">
 
 <label>Profile Image <span style = "color:red">*</span></label>
 <input type="file" id="img" accept="image/*" required>
 <div id="uploadStatus" style="margin-top: 2px; margin-bottom: 15px; font-size: 13px;"></div>
-
+<!--
 <div style = "display: flex; justify-content:flex-start">
 <div >
   <label>Full Name <span style = "color:red">*</span></label>
@@ -183,25 +183,21 @@ button:active{
 <label>Email <span style = "color:red">*</span></label>
 <input type = "email" id="email" placeholder="e.g., user@example.com" required style = "width: 300px;">
 </div>
+</div> -->
+<div style = "display: flex; align-items: cenrer; gap: 15px;"> 
+  <label>Email Address <span style="color:red">*</span></label>
+<input type="email" id="email" placeholder="Enter your email address" required style="width: 50%;">
 </div>
 
+<button onclick="fetchUserData()" style="margin-top: 10px;">Generate Signature</button>
 
-<label>
-  Address <span style="color:red">*</span>
-</label>
+<div id="loadingStatus" style="margin-top: 15px; font-size: 14px; display: none;">
+  <span style="color: #ff9800;">⏳ Fetching your information...</span>
+</div>
 
-<select id="address" style = "width: 100%; padding: 12px; font-size: 16px; font-family: inherit; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px; box-sizing: border-box;"required>
-  <option value="">-- Select Address --</option>
-
-  <option value="8940 Creek Run Rd Fort Worth, Texas 76120" data-link="https://www.google.com/maps/place/Team+Enoch:+Electric,+Plumbing,+Air,+Roofing/@32.763454,-97.1586546,17z/data=!4m6!3m5!1s0x864c2164667bb363:0xf04f27f04807c51!8m2!3d32.7634525!4d-97.1553565!16s%2Fg%2F11fmjry22_?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D">
-    Team Enoch Texas
-  </option>
-
-  <option value="3950 Anchuca Dr Bay 4 Lakeland, Florida 33811" data-link="https://www.google.com/maps/place/Team+Enoch:+AC+Repair/@27.9939422,-82.0474393,19z/data=!3m1!4b1!4m6!3m5!1s0x88dd37e24ea81f3f:0xcb756f5cc093cb08!8m2!3d27.993941!4d-82.0467956!16s%2Fg%2F11yp7tcwvy?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D">
-    Team Enoch Florida
-  </option>
-
-</select>
+<div id="errorStatus" style="margin-top: 15px; font-size: 14px; display: none; color: #f44336;">
+  ✗ <span id="errorMessage"></span>
+</div>
 <br>
 <hr style="margin:25px 0">
 
@@ -357,6 +353,17 @@ button:active{
                                   </table>
                                     <div style="font-size: 12px; color: #666; line-height: 1.4;"></div>
                                     <div id = "s_title" style="font-size: 12px; font-weight: bold; color: #000; margin-top: 10px; padding-top: 8px; border-top: 2px solid #000;">Job Title</div>
+                                    <!-- Phone -->
+                          <div style="margin-top: 8px;">
+                            <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px;">
+                            <a href="tel:+11234567890" style="color: white; font-size: 12px; text-decoration: none;" id="s_phone_card">(123) 456-7890</a>
+                          </div>
+
+                          <!-- Email -->
+                          <div style="margin-top: 4px;">
+                            <img src="https://img.icons8.com/ios-filled/20/ffffff/new-post.png" width="14" height="14" alt="Email" style="vertical-align:middle; margin-right:6px;">
+                            <a href="mailto:email@example.com" style="color: white; font-size: 12px; text-decoration: none;" id="s_email_card">email@example.com</a>
+                          </div>
                                 </td>
                             </tr>
                         </table>
@@ -385,6 +392,10 @@ button:active{
                                   <img src="https://img.icons8.com/ios-filled/20/000000/tiktok.png
                                     " width="18" height="18" alt="Facebook" style="vertical-align:middle; margin-right:4px; border:0; display:inline-block; filter: brightness(0) invert(1);">
                             </a>
+                            <a href="https://x.com/EnochTeam" target="_blank" style="display: inline-block; margin: 0 6px;">
+                                  <img src="https://img.icons8.com/ios-filled/20/000000/twitter.png
+                                    " width="18" height="18" alt="Facebook" style="vertical-align:middle; margin-right:4px; border:0; display:inline-block; filter: brightness(0) invert(1);">
+                            </a>
                         </div>
                        <div >
                           <table style="width:100%; border-collapse: collapse;text-align:left;">
@@ -394,6 +405,12 @@ button:active{
                                 <div id="texasHeading" style="color:#000; font-weight:bold; font-size:18px; margin-bottom:6px;">
                                   Texas
                                 </div>
+                                <div style="margin-top:4px; margin-bottom: 8px; white-space:nowrap;">
+                                <img src="https://img.icons8.com/ios-filled/20/ffffff/marker.png" width="14" height="14" alt="Location" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                <a href="https://www.google.com/maps/place/Team+Enoch:+Electric,+Plumbing,+Air,+Roofing/@32.763454,-97.1586546,17z/..." target="_blank" style="color:white; font-size:12px; text-decoration:none;">
+                                  8940 Creek Run Rd <br>Fort Worth, Texas 76120
+                                </a>
+                              </div>
 
                                 <div style="margin-top:4px; white-space:nowrap;">
                                   <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
@@ -429,7 +446,12 @@ button:active{
                                 <div id="floridaHeading" style="color:#000; font-weight:bold; font-size:18px; margin-bottom:6px;">
                                   Florida
                                 </div>
-
+                                <div style="margin-top:4px; margin-bottom: 8px; white-space:nowrap;">
+                        <img src="https://img.icons8.com/ios-filled/20/ffffff/marker.png" width="14" height="14" alt="Location" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                        <a href="https://www.google.com/maps/place/Team+Enoch:+Electric,+Plumbing,+Air,+Roofing/@32.763454,-97.1586546,17z/..." target="_blank" style="color:white; font-size:12px; text-decoration:none;">
+                         3950 Anchuca Dr Bay 4, Lakeland, <br>FL 33811, United States
+                        </a>
+                      </div>
                                 <div style="margin-top:4px; white-space:nowrap;">
                                   <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
                                   <a href="tel:+14073368000" style="color:white; font-size:12px; text-decoration:none;">
@@ -446,7 +468,7 @@ button:active{
                               </td>
                             </tr>
                           </table>
-
+                          
                        </div>
                     </td>
                     <td style="vertical-align: middle;  width:280px;">
@@ -458,35 +480,27 @@ button:active{
                                     <div style="color: white; font-size: 11px; margin-top: 5px; font-weight: bold;">Scan for Contact</div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td style="padding-bottom: 3px;">
-                                    <table style="border-collapse: collapse;">
-                                        <tr>
-                                            <td style="width:24px; min-width:24px; text-align:center; vertical-align:top; color:white; font-size:12px; padding-right:10px;">
-                              <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;"></td>
-                                            <td><a href="tel:+14699603171" style="color: white; font-size: 12px; white-space: nowrap; text-decoration: none;" id = "s_phone">(123) 456-7890</a></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
+                          
                             <tr>
                                 <td style="padding-bottom: 3px;">
                                     <table style="border-collapse: collapse;">
                                         <tr>
                                             <td style="width:24px; min-width:24px; text-align:center; vertical-align:top; color:white; font-size:12px; padding-right:10px;">
                                                   <img src="https://img.icons8.com/ios-filled/20/ffffff/new-post.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;"></td>
-                                            <td> <a href="mailto:bhuwan@teamenoch.com" style="color: white; font-size: 12px; text-decoration: none;" id = "s_email">email@example.com</a></td>
+                                            <td> <a href="mailto:mail@teamenoch.com" style="color: white; font-size: 12px; text-decoration: none;" id = "s_email">mail@teamenoch.com</a></td>
+                                           
                                         </tr>
                                     </table>
                                 </td>
                             </tr>
-                            <tr>
+                           <tr>
                                 <td style="padding-bottom: 3px;">
                                     <table style="border-collapse: collapse;">
                                         <tr>
                                             <td style="width:24px; min-width:24px; text-align:center; vertical-align:top; color:white; font-size:12px; padding-right:10px;">
-                                            <img src="https://img.icons8.com/ios-filled/20/ffffff/marker.png" width="14" height="14" alt="Location logo" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;"></td>
-                                            <td><a href="#" target="_blank" style="color: white; font-size: 12px; text-decoration: none;" id = "s_address">Select an Address</a></td>
+                                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/globe.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;"></td>
+                                            <td> <a href="www.teamenoch.com" style="color: white; font-size: 12px; text-decoration: none;" >teamenoch.com</a></td>
+                                           
                                         </tr>
                                     </table>
                                 </td>
@@ -593,6 +607,19 @@ document.getElementById("img").addEventListener("change", async function(e) {
   }
 });
 
+// async function fetchUserData() {
+//   const emailInput = document.getElementById("email").value.trim().toLowerCase();
+
+//   if(!emailInput) {
+//     showError("Please enter an email address");
+//     return;
+//   }
+//   showLoading(true);
+//   try{
+//     const response = await fetch("/users.json")
+//   }
+// }
+
 // Listen for when user selects a background image
 document.getElementById("bgImageInput").addEventListener("change", async function(e) {
   const file = e.target.files[0];
@@ -650,20 +677,19 @@ function liveUpdateSignature() {
 
   //update phone
   if (phoneVal) {
-    s_phone.textContent = phoneVal;
-    s_phone.href = "tel:" + phoneVal.replace(/\D/g, '');
+    s_phone_card.textContent = phoneVal;
+    s_phone_card.href = "tel:" + phoneVal.replace(/\D/g, '');
   } else {
-    s_phone.textContent = "(123) 456-7890";
-    s_phone.href = "tel:+11234567890";
+    s_phone_card.textContent = "(123) 456-7890";
+    s_phone_card.href = "tel:+11234567890";
   }
   //update email
   if (emailVal) {
-    s_email.textContent = emailVal;
-    s_email.href = "mailto:" + emailVal;
+    s_email_card.textContent = emailVal;
+    s_email_card.href = "mailto:" + emailVal;
   }else {
-    s_email.textContent = "email@example.com";
-    s_
-    email.href = "mailto:email@example.com";
+    s_email_card.textContent = "email@example.com";
+    s_email_card.href = "mailto:email@example.com";
   }
   //update address
 
@@ -725,8 +751,11 @@ function copyHTMLCode() {
 }
 
 ["name", "title", "phone", "email", "address"].forEach(id => {
-  document.getElementById(id).addEventListener("input", liveUpdateSignature);
-  document.getElementById(id).addEventListener("change", liveUpdateSignature);
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener("input", liveUpdateSignature);
+    el.addEventListener("change", liveUpdateSignature);
+  }
 });
 
 function updateSignatureColorsAndFont() {
@@ -749,10 +778,10 @@ function updateSignatureColorsAndFont() {
   s_title.style.color = fontColorTitle;
 
   // Last column - Contact details
-  s_phone.style.fontSize = fontSizeContact;
-  s_phone.style.color = fontColorContact;
-  s_email.style.fontSize = fontSizeContact;
-  s_email.style.color = fontColorContact;
+  s_phone_card.style.fontSize = fontSizeContact;
+ s_phone_card.style.color = fontColorContact;
+  s_email_card.style.fontSize = fontSizeContact;
+  s_email_card.style.color = fontColorContact;
   s_address.style.fontSize = fontSizeContact;
   s_address.style.color = fontColorContact;
 

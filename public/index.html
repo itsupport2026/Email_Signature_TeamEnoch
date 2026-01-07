@@ -149,6 +149,9 @@ button:active{
 <label>Profile Image <span style = "color:red">*</span></label>
 <input type="file" id="img" accept="image/*" required>
 <div id="uploadStatus" style="margin-top: 2px; margin-bottom: 15px; font-size: 13px;"></div>
+
+<label> Job Title <span style = "color:red">*</span></label>
+<input type = "text" id = "jobTitleInput" placeholder = "Enter job title if not found" style = "width: 50%"/>
 <!--
 <div style = "display: flex; justify-content:flex-start">
 <div >
@@ -280,7 +283,7 @@ button:active{
 <div style="display:flex; gap:10px; margin-bottom:10px; align-items:center; width: 200px;">
   <input type="color" id="cardColorPicker" value="#1a1a1a" style="width:50px; height:35px; cursor:pointer;">
   <input type="text" id="cardColorText" value="#1a1a1a" placeholder="#000000" style="width:100px; font-family:monospace;">
-  <!-- <span id="cardColorDisplay" style="padding:4px 12px; background-color:#1a1a1a; border:1px solid #ccc; border-radius:4px; font-family:monospace; font-size:12px; color:#ffffff;">#1a1a1a</span> -->
+ 
 </div>
  </div>  
 
@@ -360,10 +363,25 @@ button:active{
                           </div>
 
                           <!-- Email -->
-                          <div style="margin-top: 4px;">
-                            <img src="https://img.icons8.com/ios-filled/20/ffffff/new-post.png" width="14" height="14" alt="Email" style="vertical-align:middle; margin-right:6px;">
-                            <a href="mailto:email@example.com" style="color: white; font-size: 12px; text-decoration: none;" id="s_email_card">email@example.com</a>
-                          </div>
+                         <!-- Email (icon + address on same line) -->
+                            <table style="margin-top: 6px; border-collapse: collapse;">
+                              <tr>
+                                <td style="vertical-align: middle; padding-right: 6px;">
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/new-post.png"
+                                      width="14" height="14"
+                                      alt="Email"
+                                      style="display:block;">
+                                </td>
+                                <td style="vertical-align: middle;">
+                                  <a href="mailto:email@example.com"
+                                    id="s_email_card"
+                                    style="color: white; font-size: 12px; text-decoration: none; white-space: nowrap;">
+                                    email@example.com
+                                  </a>
+                                </td>
+                              </tr>
+                            </table>
+
                                 </td>
                             </tr>
                         </table>
@@ -525,6 +543,7 @@ button:active{
 </div>
 </div>
 
+<!-- <script src="script.js"></script> -->
 <script>
   const sigOuter = document.getElementById("sigOuter");
 function formatPhone(input) {
@@ -607,18 +626,100 @@ document.getElementById("img").addEventListener("change", async function(e) {
   }
 });
 
-// async function fetchUserData() {
-//   const emailInput = document.getElementById("email").value.trim().toLowerCase();
+async function fetchUserData() {
+  const emailInput = document.getElementById("email").value.trim().toLowerCase();
 
-//   if(!emailInput) {
-//     showError("Please enter an email address");
-//     return;
-//   }
-//   showLoading(true);
-//   try{
-//     const response = await fetch("/users.json")
-//   }
+  if(!emailInput) {
+    showError("Please enter an email address");
+    return;
+  }
+  showLoading(true);
+  try{
+    const response = await fetch("./output.json");
+    if (!response.ok) throw new Error("unable to load user data");
+
+    const users = await response.json();
+
+    const user = users.find(
+      u => u.email.toLowerCase() === emailInput
+    );
+    if(!user) {
+      showError("no user found for this email");
+      showLoading(false);
+      return;
+    }
+    populateSignatureFromUser(user);
+    showLoading(false);
+  } catch (err) {
+    showError("Error fetching user data");
+    showLoading(false);
+  }
+}
+
+function showLoading(show) {
+  document.getElementById("loadingStatus").style.display = show ? "block" : "none";
+  document.getElementById("errorStatus").style.display = "none";
+}
+function showError(message) {
+  document.getElementById("errorMessage").textContent = message;
+  document.getElementById("errorStatus").style.display = "block";
+}
+
+function populateSignatureFromUser(user) {
+  // s_name.textContent = user.name || "John Doe";
+  // const manualJobTitle = document.getElementById("jobTitleInput").value.trim();
+  //   if (user.jobTitle && user.jobTitle.trim() !== "") {
+  //     s_title.textContent = user.jobTitle;
+  //   } else if (manualJobTitle) {
+  //     s_title.textContent = manualJobTitle;
+  //   } else {
+  //     s_title.textContent = "Job Title";
+  //   }
+  s_title.textContent = user.jobTitle || "Job Title";
+
+  if(user.directNumber) {
+    s_phone_card.textContent = user.directNumber;
+    s_phone_card.href = "tel:" + user.directNumber.replace(/\D/g,"");
+  }
+  s_email_card.textContent = user.email;
+  s_email_card.href = "mailto:" + user.email;
+
+//   const jobInput = document.getElementById("jobTitleInput");
+
+// if (user.jobTitle && user.jobTitle.trim() !== "") {
+//   jobInput.value = user.jobTitle;
+//   jobInput.disabled = true;
+// } else {
+//   jobInput.disabled = false;
 // }
+  //make sure preview is visible
+  document.getElementById("signatureWrapper").style.display = "block";
+
+  updateQRCodeFromUser(user);
+  updateHTMLCodeDisplay();
+}
+
+function updateQRCodeFromUser(user) {
+  if (!user.name || !user.email || !user.directNumber) return;
+
+  const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:${user.name}
+N:${user.name.split(" ").reverse().join(";")};;;
+ORG:Team Enoch
+TITLE:${user.jobTitle || ""}
+TEL;TYPE=CELL:${user.directNumber.replace(/\D/g, "")}
+EMAIL:${user.email}
+URL:https://teamenoch.com
+END:VCARD`;
+
+  const encodedVCard = encodeURIComponent(vCard);
+
+  const qrImg = document.querySelector('img[src*="qrserver"]');
+  if (qrImg) {
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodedVCard}`;
+  }
+}
 
 // Listen for when user selects a background image
 document.getElementById("bgImageInput").addEventListener("change", async function(e) {
@@ -705,22 +806,6 @@ function liveUpdateSignature() {
     updateHTMLCodeDisplay(); 
 }
 
-function updateQRCode() {
-  const nameVal = document.getElementById("name").value.trim();
-  const titleVal = document.getElementById("title").value.trim();
-  const companyVal = document.getElementById("company").value.trim();
-  const phoneVal = document.getElementById("phone").value.trim();
-  const emailVal = document.getElementById("email").value.trim();
-  const select = document.getElementById("address");
-  const selectedAddress = select.options[select.selectedIndex];
-  
-  // Only update QR if we have all required data
-  if (nameVal && titleVal && phoneVal && emailVal && selectedAddress.value) {
-    const vCardData = generateVCard(nameVal, emailVal, phoneVal, selectedAddress.value, titleVal, companyVal);
-    const qrImg = document.querySelector('img[src*="qrserver"]');
-    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${vCardData}`;
-  }
-}
 
 function updateHTMLCodeDisplay() {
   const signatureTable = document.querySelector('#signatureWrapper table');
@@ -919,6 +1004,5 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 </script>
-
 </body>
 </html>

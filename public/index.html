@@ -150,8 +150,11 @@ button:active{
 <input type="file" id="img" accept="image/*" required>
 <div id="uploadStatus" style="margin-top: 2px; margin-bottom: 15px; font-size: 13px;"></div>
 
-<label> Job Title <span style = "color:red">*</span></label>
-<input type = "text" id = "jobTitleInput" placeholder = "Enter job title if not found" style = "width: 50%"/>
+<div id="jobTitleContainer" style="display: none;">
+  <label>Job Title <span style="color:red">*</span></label>
+  <input type="text" id="jobTitleInput" placeholder="Enter job title" style="width: 50%"/>
+</div>
+
 <!--
 <div style = "display: flex; justify-content:flex-start">
 <div >
@@ -187,10 +190,10 @@ button:active{
 <input type = "email" id="email" placeholder="e.g., user@example.com" required style = "width: 300px;">
 </div>
 </div> -->
-<div style = "display: flex; align-items: cenrer; gap: 15px;"> 
+
   <label>Email Address <span style="color:red">*</span></label>
-<input type="email" id="email" placeholder="Enter your email address" required style="width: 50%;">
-</div>
+<input type="email" id="email" placeholder="Enter your email address" required style="width: 100%;">
+
 
 <button onclick="fetchUserData()" style="margin-top: 10px;">Generate Signature</button>
 
@@ -358,7 +361,7 @@ button:active{
                                     <div id = "s_title" style="font-size: 12px; font-weight: bold; color: #000; margin-top: 10px; padding-top: 8px; border-top: 2px solid #000;">Job Title</div>
                                     <!-- Phone -->
                           <div style="margin-top: 8px;">
-                            <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px;">
+                            <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:2px;">
                             <a href="tel:+11234567890" style="color: white; font-size: 12px; text-decoration: none;" id="s_phone_card">(123) 456-7890</a>
                           </div>
 
@@ -423,36 +426,42 @@ button:active{
                                 <div id="texasHeading" style="color:#000; font-weight:bold; font-size:18px; margin-bottom:6px;">
                                   Texas
                                 </div>
-                                <div style="margin-top:4px; margin-bottom: 8px; white-space:nowrap;">
-                                <img src="https://img.icons8.com/ios-filled/20/ffffff/marker.png" width="14" height="14" alt="Location" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
-                                <a href="https://www.google.com/maps/place/Team+Enoch:+Electric,+Plumbing,+Air,+Roofing/@32.763454,-97.1586546,17z/..." target="_blank" style="color:white; font-size:12px; text-decoration:none;">
-                                  8940 Creek Run Rd <br>Fort Worth, Texas 76120
-                                </a>
-                              </div>
+                               <div style="margin-top:4px; display:flex; align-items:flex-start; white-space:nowrap;">
+  <img src="https://img.icons8.com/ios-filled/20/ffffff/marker.png" width="14" height="14" alt="Location" style="margin-right:2px; border:0; margin-top:2px;">
+  <div style="display:flex; flex-direction:column;">
+    <a href="https://www.google.com/maps/place/Team+Enoch:+Electric,+Plumbing,+Air,+Roofing/@32.763454,-97.1586546,17z/..." target="_blank" style="color:white; font-size:12px; text-decoration:none;">
+      8940 Creek Run Rd,
+    </a>
+    <a href="https://www.google.com/maps/place/Team+Enoch:+Electric,+Plumbing,+Air,+Roofing/@32.763454,-97.1586546,17z/..." target="_blank" style="color:white; font-size:12px; text-decoration:none;">
+      Fort Worth, 76120
+    </a>
+  </div>
+</div>
+
 
                                 <div style="margin-top:4px; white-space:nowrap;">
-                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:2px; border:0; display:inline-block;">
                                   <a href="tel:+18178888880" style="color:white; font-size:12px; text-decoration:none;">
                                     DFW: (817) 888-8880
                                   </a>
                                 </div>
 
                                 <div style="margin-top:4px; white-space:nowrap;">
-                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:2px; border:0; display:inline-block;">
                                   <a href="tel:+15128828880" style="color:white; font-size:12px; text-decoration:none;">
                                     Austin: (512) 882-8880
                                   </a>
                                 </div>
 
                                 <div style="margin-top:4px; white-space:nowrap;">
-                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:2px; border:0; display:inline-block;">
                                   <a href="tel:+17135001000" style="color:white; font-size:12px; text-decoration:none;">
                                     Houston: (713) 500-1000
                                   </a>
                                 </div>
 
                                 <div style="margin-top:4px; white-space:nowrap;">
-                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:2px; border:0; display:inline-block;">
                                   <a href="tel:+12109048000" style="color:white; font-size:12px; text-decoration:none;">
                                     San Antonio: (210) 904-8000
                                   </a>
@@ -464,21 +473,27 @@ button:active{
                                 <div id="floridaHeading" style="color:#000; font-weight:bold; font-size:18px; margin-bottom:6px;">
                                   Florida
                                 </div>
-                                <div style="margin-top:4px; margin-bottom: 8px; white-space:nowrap;">
-                        <img src="https://img.icons8.com/ios-filled/20/ffffff/marker.png" width="14" height="14" alt="Location" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
-                        <a href="https://www.google.com/maps/place/Team+Enoch:+Electric,+Plumbing,+Air,+Roofing/@32.763454,-97.1586546,17z/..." target="_blank" style="color:white; font-size:12px; text-decoration:none;">
-                         3950 Anchuca Dr Bay 4, Lakeland, <br>FL 33811, United States
-                        </a>
-                      </div>
+                                <div style="margin-top:4px; display:flex; align-items:flex-start; white-space:nowrap;">
+                              <img src="https://img.icons8.com/ios-filled/20/ffffff/marker.png" width="14" height="14" alt="Location" style="margin-right:2px; border:0; margin-top:2px;">
+                              <div style="display:flex; flex-direction:column;">
+                                <a href="https://www.google.com/maps/place/Team+Enoch:+Electric,+Plumbing,+Air,+Roofing/@32.763454,-97.1586546,17z/..." target="_blank" style="color:white; font-size:12px; text-decoration:none;">
+                                  3950 Anchuca Dr Bay 4, Lakeland,
+                                </a>
+                                <a href="https://www.google.com/maps/place/Team+Enoch:+Electric,+Plumbing,+Air,+Roofing/@32.763454,-97.1586546,17z/..." target="_blank" style="color:white; font-size:12px; text-decoration:none;">
+                                  FL 33811, United States
+                                </a>
+                              </div>
+                            </div>
+
                                 <div style="margin-top:4px; white-space:nowrap;">
-                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:2px; border:0; display:inline-block;">
                                   <a href="tel:+14073368000" style="color:white; font-size:12px; text-decoration:none;">
                                     Orlando: (407) 336-8000
                                   </a>
                                 </div>
 
                                 <div style="margin-top:4px; white-space:nowrap;">
-                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;">
+                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/phone.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:2px; border:0; display:inline-block;">
                                   <a href="tel:+18134368000" style="color:white; font-size:12px; text-decoration:none;">
                                     Tampa: (813) 436-8000
                                   </a>
@@ -504,7 +519,7 @@ button:active{
                                     <table style="border-collapse: collapse;">
                                         <tr>
                                             <td style="width:24px; min-width:24px; text-align:center; vertical-align:top; color:white; font-size:12px; padding-right:10px;">
-                                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/new-post.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;"></td>
+                                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/new-post.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:1px; border:0; display:inline-block;"></td>
                                             <td> <a href="mailto:mail@teamenoch.com" style="color: white; font-size: 12px; text-decoration: none;" id = "s_email">mail@teamenoch.com</a></td>
                                            
                                         </tr>
@@ -516,8 +531,8 @@ button:active{
                                     <table style="border-collapse: collapse;">
                                         <tr>
                                             <td style="width:24px; min-width:24px; text-align:center; vertical-align:top; color:white; font-size:12px; padding-right:10px;">
-                                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/globe.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:6px; border:0; display:inline-block;"></td>
-                                            <td> <a href="www.teamenoch.com" style="color: white; font-size: 12px; text-decoration: none;" >teamenoch.com</a></td>
+                                                  <img src="https://img.icons8.com/ios-filled/20/ffffff/globe.png" width="14" height="14" alt="Phone" style="vertical-align:middle; margin-right:1px; border:0; display:inline-block;"></td>
+                                            <td> <a href="www.teamenoch.com" style="color: white; font-size: 12px; text-decoration: none;" >www.teamenoch.com</a></td>
                                            
                                         </tr>
                                     </table>
@@ -531,11 +546,20 @@ button:active{
     </tr>
 </table>
 
+<div style="margin-top: 20px; display: flex; gap: 10px;">
+  <button onclick="copyVisualSignature()" style="flex: 1;">
+     Copy Signature for Email
+  </button>
+  <button onclick="copyHTMLCode()" style="flex: 1; background: #6366f1;">
+   Copy HTML Code
+  </button>
+</div>
+
 <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e5e7eb;">
   <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">HTML Code</h3>
   <p style="font-size: 13px; color: #666; margin-bottom: 10px;">Copy this code and paste it into your email client's signature settings:</p>
   <textarea id="htmlCodeOutput" readonly style="width: 100%; height: 200px; font-family: monospace; font-size: 11px; padding: 12px; border: 1.5px solid #d0d5dd; border-radius: 8px; background: #f9fafb; resize: vertical; margin-bottom: 10px;"></textarea>
-  <button onclick="copyHTMLCode()" style="width: 100%;">Copy HTML to Clipboard</button>
+ 
 </div>
 
 </div>
@@ -545,7 +569,9 @@ button:active{
 
 <!-- <script src="script.js"></script> -->
 <script>
-  const sigOuter = document.getElementById("sigOuter");
+const sigOuter = document.getElementById("sigOuter");
+const sigCard = document.getElementById("sigCard");
+
 function formatPhone(input) {
   let digits = input.value.replace(/\D/g, '').slice(0, 10);
 
@@ -666,16 +692,22 @@ function showError(message) {
 }
 
 function populateSignatureFromUser(user) {
-  // s_name.textContent = user.name || "John Doe";
-  // const manualJobTitle = document.getElementById("jobTitleInput").value.trim();
-  //   if (user.jobTitle && user.jobTitle.trim() !== "") {
-  //     s_title.textContent = user.jobTitle;
-  //   } else if (manualJobTitle) {
-  //     s_title.textContent = manualJobTitle;
-  //   } else {
-  //     s_title.textContent = "Job Title";
-  //   }
-  s_title.textContent = user.jobTitle || "Job Title";
+    s_name.textContent = user.name || "Test Name";
+
+  const jobTitleContainer = document.getElementById("jobTitleContainer");
+  const jobTitleInput = document.getElementById("jobTitleInput");
+  
+  // Check if user has a job title
+  if (user.jobTitle && user.jobTitle.trim() !== "") {
+    // User has job title - hide the input field
+    jobTitleContainer.style.display = "none";
+    s_title.textContent = user.jobTitle;
+  } else {
+    // User doesn't have job title - show the input field
+    jobTitleContainer.style.display = "block";
+    jobTitleInput.value = ""; // Clear any previous value
+    s_title.textContent = "Job Title";
+  }
 
   if(user.directNumber) {
     s_phone_card.textContent = user.directNumber;
@@ -684,15 +716,9 @@ function populateSignatureFromUser(user) {
   s_email_card.textContent = user.email;
   s_email_card.href = "mailto:" + user.email;
 
-//   const jobInput = document.getElementById("jobTitleInput");
+  // Store user data for QR code generation
+  window.currentUser = user;
 
-// if (user.jobTitle && user.jobTitle.trim() !== "") {
-//   jobInput.value = user.jobTitle;
-//   jobInput.disabled = true;
-// } else {
-//   jobInput.disabled = false;
-// }
-  //make sure preview is visible
   document.getElementById("signatureWrapper").style.display = "block";
 
   updateQRCodeFromUser(user);
@@ -835,6 +861,53 @@ function copyHTMLCode() {
   }
 }
 
+async function copyVisualSignature() {
+  const signatureTable = document.querySelector('#signatureWrapper table');
+  
+  if (!signatureTable) {
+    alert('Signature not found! Please generate a signature first.');
+    return;
+  }
+
+  try {
+    const signatureHTML = signatureTable.outerHTML;
+    
+    // Create a ClipboardItem with HTML
+    const htmlBlob = new Blob([signatureHTML], { type: 'text/html' });
+    const textBlob = new Blob([signatureHTML], { type: 'text/plain' });
+    
+    const clipboardItem = new ClipboardItem({
+      'text/html': htmlBlob,
+      'text/plain': textBlob
+    });
+    
+    await navigator.clipboard.write([clipboardItem]);
+    
+    alert('✓ Signature copied!\n\nYou can now:\n1. Open your email client\n2. Go to signature settings\n3. Paste (Ctrl+V or Cmd+V)\n\nThe formatted signature will be pasted directly!');
+    
+  } catch (err) {
+    // Fallback for browsers that don't support ClipboardItem
+    console.error('Clipboard API failed:', err);
+    
+    // Try the old method
+    const tempTextarea = document.createElement('textarea');
+    tempTextarea.value = signatureTable.outerHTML;
+    tempTextarea.style.position = 'fixed';
+    tempTextarea.style.opacity = '0';
+    document.body.appendChild(tempTextarea);
+    tempTextarea.select();
+    
+    try {
+      document.execCommand('copy');
+      alert('✓ Signature HTML copied!\n\nPaste it into your email signature settings.');
+    } catch (err2) {
+      alert('❌ Failed to copy. Please use the "Copy HTML Code" button instead.');
+    }
+    
+    document.body.removeChild(tempTextarea);
+  }
+}
+
 ["name", "title", "phone", "email", "address"].forEach(id => {
   const el = document.getElementById(id);
   if (el) {
@@ -844,7 +917,6 @@ function copyHTMLCode() {
 });
 
 function updateSignatureColorsAndFont() {
-
   const fontSizeName = document.getElementById("fontSizeName").value + "px";
   const fontSizeContact = document.getElementById("fontSizeContact").value + "px";
   const fontColorProfile = document.getElementById("fontColorProfileText").value;
@@ -862,42 +934,59 @@ function updateSignatureColorsAndFont() {
   s_title.style.fontSize = fontSizeName;
   s_title.style.color = fontColorTitle;
 
-  // Last column - Contact details
+  // Personal phone and email in the card (left section)
   s_phone_card.style.fontSize = fontSizeContact;
- s_phone_card.style.color = fontColorContact;
+  s_phone_card.style.color = fontColorContact;
   s_email_card.style.fontSize = fontSizeContact;
   s_email_card.style.color = fontColorContact;
-  s_address.style.fontSize = fontSizeContact;
-  s_address.style.color = fontColorContact;
-
-  // Middle column - Texas/Florida phone numbers
-  const middlePhoneLinks = document.querySelectorAll('td[style*="vertical-align: top"] a[href^="tel:"]');
-  middlePhoneLinks.forEach(link => {
-    // Skip the personal phone in the last column
-    if (link.id !== 's_phone') {
-      link.style.fontSize = fontSizeContact;
-      link.style.color = fontColorContact;
-    }
-  });
 
   // Texas and Florida headings
-const texasHeading = document.getElementById('texasHeading');
-const floridaHeading = document.getElementById('floridaHeading');
+  const texasHeading = document.getElementById('texasHeading');
+  const floridaHeading = document.getElementById('floridaHeading');
+  
+  if (texasHeading) {
+    texasHeading.style.color = fontColorHeading;
+  }
+  if (floridaHeading) {
+    floridaHeading.style.color = fontColorHeading;
+  }
 
-if (texasHeading) {
-  texasHeading.style.color = fontColorHeading;
+  // ALL phone numbers in Texas and Florida sections
+  const allPhoneLinks = document.querySelectorAll('a[href^="tel:"]');
+  allPhoneLinks.forEach(link => {
+    link.style.fontSize = fontSizeContact;
+    link.style.color = fontColorContact;
+  });
+
+  // ALL email links (both in card and right section)
+  const allEmailLinks = document.querySelectorAll('a[href^="mailto:"]');
+  allEmailLinks.forEach(link => {
+    link.style.fontSize = fontSizeContact;
+    link.style.color = fontColorContact;
+  });
+
+  // Website link
+  const websiteLink = document.querySelector('a[href*="teamenoch.com"]');
+  if (websiteLink) {
+    websiteLink.style.fontSize = fontSizeContact;
+    websiteLink.style.color = fontColorContact;
+  }
+
+  // Location/address links
+  const locationLinks = document.querySelectorAll('a[href*="google.com/maps"]');
+  locationLinks.forEach(link => {
+    link.style.fontSize = fontSizeContact;
+    link.style.color = fontColorContact;
+  });
+
+  // Card background and border
+  if (sigCard) {
+    sigCard.style.backgroundColor = cardColor;
+    sigCard.style.borderColor = cardBorder;
+  }
+
+  updateHTMLCodeDisplay();
 }
-if (floridaHeading) {
-  floridaHeading.style.color = fontColorHeading;
-}
-
-
-  // Card
-  sigCard.style.backgroundColor = cardColor;
-  sigCard.style.borderColor = cardBorder;
-  updateHTMLCodeDisplay(); 
-}
-
 
 function applyBackgroundColor(color) {
 
@@ -1003,6 +1092,24 @@ window.addEventListener('DOMContentLoaded', function() {
   updateHTMLCodeDisplay();
 });
 
+// Listen for manual job title input
+document.getElementById("jobTitleInput").addEventListener("input", function() {
+  const manualJobTitle = this.value.trim();
+  
+  if (manualJobTitle) {
+    s_title.textContent = manualJobTitle;
+    
+    // Update QR code with manual job title
+    if (window.currentUser) {
+      window.currentUser.jobTitle = manualJobTitle;
+      updateQRCodeFromUser(window.currentUser);
+    }
+  } else {
+    s_title.textContent = "Job Title";
+  }
+  
+  updateHTMLCodeDisplay();
+});
 </script>
 </body>
 </html>
